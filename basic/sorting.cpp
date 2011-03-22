@@ -10,6 +10,13 @@ using namespace std;
 //			Sorting Functions
 //=========================================
 
+void swap(int &i, int &j)
+{
+	int t = i;
+	i = j;
+	j = t;
+}
+
 void insertion_sort(vector<int> &arr)
 {
 	for (int i = 1; i < arr.size(); ++i)
@@ -21,6 +28,26 @@ void insertion_sort(vector<int> &arr)
 			arr[j + 1] = arr[j];
 		}
 		arr[j + 1] = key;
+	}
+}
+
+void selection_sort(vector<int> &in)
+{
+	vector<int>::iterator it1;
+	vector<int>::iterator it2;
+	vector<int>::iterator it_min;
+
+	for (it1 = in.begin(); it1 != in.end() - 1; it1++)
+	{
+		for (it2 = it1 + 1, it_min = it1; it2 != in.end(); it2++)
+		{
+			if (*it2 < *it_min)
+				it_min = it2;
+		}
+		if (it_min != it1)
+		{
+			swap(*it1, *it_min);
+		}
 	}
 }
 
@@ -109,7 +136,7 @@ void call_sorting(vector<int> &in, pFn f, Permutation perm = Descend, bool if_pr
 
 void test(pFn f)
 {
-	while (1)
+	//while (1)
 	{
 		int n = 10;
 		while (1)
@@ -154,13 +181,20 @@ void test(pFn f)
 		call_sorting(in, f, Descend, if_print);
 		call_sorting(in, f, Random, if_print);
 
-		cout << "\nLet's do it again..." << endl;
+		//cout << "\nLet's do it again..." << endl;
 	}
 }
 
 
 int main()
 {
-	pFn f = insertion_sort;
+	pFn f = NULL;
+
+	cout << "=========== Insertion sort ==========" << endl;
+	f = insertion_sort;
+	test(f);
+	
+	cout << "=========== Selection sort ==========" << endl;
+	f = selection_sort;
 	test(f);
 }
