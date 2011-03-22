@@ -109,22 +109,46 @@ void call_sorting(vector<int> &in, pFn f, Permutation perm = Descend, bool if_pr
 
 void test(pFn f)
 {
-	while (cin)
+	while (1)
 	{
-		vector<int>::size_type n = 10;
-		do {
+		int n = 10;
+		while (1)
+		{
 			cout << "\nPlease input array size(N>0): ";
 			cin >> n;
-		} while ( cin && n < 1 && (cout << "Invalid value!!" << endl) );
+			if (cin.eof())
+				exit(0);
+			else if (cin.fail() || n < 0)
+			{
+				cerr << "Invalid value" << endl;
+				cin.clear();
+				cin.ignore(10000, '\n');
+			}
+			else
+				break;
+		}
 		vector<int> in(n, 0);
 
 		bool if_print = true;
 		string s;
-		do {
-			cout << "Do you want to print out arrays?(y/n):";
+		while (1)
+		{
+			cerr << "Show arrays?(y/n): ";
 			cin >> s;
-		} while ( cin && s[0] != 'y' && s[0] != 'n' );
-		s[0] == 'y' ? if_print = true : if_print = false;
+			if (cin.eof())
+				exit(0);
+			else if (cin.fail() || (s[0] != 'y' && s[0] != 'n'))
+			{
+				cerr << "Invalid value" << endl;
+				cin.clear();
+				cin.ignore(10000, '\n');
+			}
+			else
+			{
+				s[0] == 'y' ? if_print = true : if_print = false;
+				break;
+			}
+		}
 
 		call_sorting(in, f, Ascend, if_print);
 		call_sorting(in, f, Descend, if_print);
