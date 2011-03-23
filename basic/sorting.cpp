@@ -93,6 +93,7 @@ void merge_sort(vector<int> &in)
 	merge_sort_work(in, 0, in.size() - 1);
 }
 
+
 //=========================================
 //			Testing
 //=========================================
@@ -199,6 +200,21 @@ void create_proto_arrays()
 	create_random_array(proto_random, n);
 }
 
+void verify(vector<int> &in)
+{
+	for (vector<int>::iterator it = in.begin(); it != in.end() - 1; it++)
+	{
+		if (*it > *(it + 1))
+		{
+			for (int t = 0; t < 3; t++)
+				cout << "!!! Failed to verify !!!";
+			cout << endl;
+			return;
+		}
+	}
+	//cout << "Pass verification !!!" << endl;
+}
+
 void call_sorting(vector<int> &in, pFn f)
 {
 	long start = clock();	
@@ -206,9 +222,11 @@ void call_sorting(vector<int> &in, pFn f)
 	long end = clock();	
 	double duration = static_cast<double> (end - start)/CLOCKS_PER_SEC; 
 
+	verify(in);
+
 	if (if_print) 
 		print_v(in);
-	cout << "Time consuming: " << duration << " seconds" << endl;
+	cout << "Time: " << duration << " seconds" << endl;
 }
 
 void test_sorting(pFn f)
