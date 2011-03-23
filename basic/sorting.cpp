@@ -94,23 +94,28 @@ void call_sorting(vector<int> &in, pFn f, Permutation perm = Descend, bool if_pr
 	
 	if (if_print) 
 		print_v(in);
+	
+	long start = clock();	
 	f(in);
+	long end = clock();	
+	double duration = static_cast<double> (end - start)/CLOCKS_PER_SEC; 
+
+	cout << "After sorting array: " << endl;
 	if (if_print) 
-	{
-		cout << "After sorting array: " << endl;
 		print_v(in);
-	}
+	cout << "Time consuming: " << duration << " seconds" << endl;
+	cout << endl;
 }
 
 void test(pFn f)
 {
 	while (cin)
 	{
-		vector<int>::size_type n = 0;
+		vector<int>::size_type n = 10;
 		do {
 			cout << "\nPlease input array size(N>0): ";
 			cin >> n;
-		} while (n < 1 && (cout << "Invalid value!!" << endl));
+		} while ( cin && n < 1 && (cout << "Invalid value!!" << endl) );
 		vector<int> in(n, 0);
 
 		bool if_print = true;
@@ -118,7 +123,7 @@ void test(pFn f)
 		do {
 			cout << "Do you want to print out arrays?(y/n):";
 			cin >> s;
-		} while (s[0] != 'y' && s[0] != 'n');
+		} while ( cin && s[0] != 'y' && s[0] != 'n' );
 		s[0] == 'y' ? if_print = true : if_print = false;
 
 		call_sorting(in, f, Ascend, if_print);
