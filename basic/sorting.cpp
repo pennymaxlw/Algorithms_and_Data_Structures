@@ -17,6 +17,7 @@ void swap(int &i, int &j)
 	j = t;
 }
 
+//==== Insertion sort
 void insertion_sort(vector<int> &arr)
 {
 	for (int i = 1; i < arr.size(); ++i)
@@ -31,6 +32,7 @@ void insertion_sort(vector<int> &arr)
 	}
 }
 
+//==== Selection sort
 void selection_sort(vector<int> &in)
 {
 	vector<int>::iterator it1;
@@ -49,6 +51,46 @@ void selection_sort(vector<int> &in)
 			swap(*it1, *it_min);
 		}
 	}
+}
+
+//==== Merge sort
+void merge_sort_merge(vector<int> &in, int p, int q, int r)
+{
+	int ltn = q - p + 1;
+	int rtn = r - q;
+	vector<int> ltv(ltn, 0);
+	vector<int> rtv(rtn, 0);
+	int i, j;
+
+	for (i = 0; i < ltn; i++)
+		ltv[i] = in[p + i];
+	for (i = 0; i < rtn; i++)
+		rtv[i] = in[q + 1 + i];
+
+	i = j = 0;
+	for (int k = p; k <= r; k++)
+	{
+		if (i < ltn && (j >= rtn || ltv[i] <= rtv[j])) //notice inner brackets sequence 
+			in[k] = ltv[i++];
+		else
+			in[k] = rtv[j++];
+	}	
+}
+
+void merge_sort_work(vector<int> &in, int p, int r)
+{
+	if (p < r)
+	{
+		int q = p + (r - p)/2;
+		merge_sort_work(in, p, q);
+		merge_sort_work(in, q + 1, r);
+		merge_sort_merge(in, p, q, r);
+	}
+}
+
+void merge_sort(vector<int> &in)
+{
+	merge_sort_work(in, 0, in.size() - 1);
 }
 
 //=========================================
@@ -189,12 +231,16 @@ void test(pFn f)
 int main()
 {
 	pFn f = NULL;
-
+/*
 	cout << "=========== Insertion sort ==========" << endl;
 	f = insertion_sort;
 	test(f);
 	
 	cout << "=========== Selection sort ==========" << endl;
 	f = selection_sort;
+	test(f);
+*/	
+	cout << "=========== Merge sort ==========" << endl;
+	f = merge_sort;
 	test(f);
 }
