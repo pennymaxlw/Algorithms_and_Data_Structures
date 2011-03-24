@@ -99,6 +99,10 @@ void merge_sort(vector<int> &in)
 
 typedef void (*pFn)(vector<int>&);
 enum Permutation {Ascend, Descend, Random};
+bool if_print = false;
+vector<int> proto_ascend;
+vector<int> proto_descend;
+vector<int> proto_random;
 
 void print_v(vector<int> &arr)
 {
@@ -109,97 +113,67 @@ void print_v(vector<int> &arr)
 	cout << endl;
 }
 
-void make_array_ascend(vector<int> &in)
+void create_ascend_array(vector<int> &in, int n)
 {
-	int i = 0;
-	for (vector<int>::iterator it = in.begin();
-			it != in.end(); it++, i++)
+	for (int i = 0; i < n; i++)
+		in.push_back(i);
+
+	if (if_print) 
 	{
-		*it = i;
+		cout << "Unsorted ascend array:" << endl;
+		print_v(in);
 	}
 }
 
-void make_array_descend(vector<int> &in)
+void create_descend_array(vector<int> &in, int n)
 {
-	int i = in.size() - 1;
-	for (vector<int>::iterator it = in.begin();
-			it != in.end(); it++, i--)
+	for (int i = 0; i < n; i++)
+		in.push_back(n - 1 - i);
+
+	if (if_print) 
 	{
-		*it = i;
+		cout << "Unsorted descend array:" << endl;
+		print_v(in);
 	}
 }
 
-void make_array_random(vector<int> &in)
+void create_random_array(vector<int> &in, int n)
 {
 	srand(static_cast<unsigned> (time(0)));
-	for (vector<int>::iterator it = in.begin();
-			it != in.end(); it++)
+	for (int i = 0; i < n; i++)
+		in.push_back(rand()%n);
+
+	if (if_print) 
 	{
-		*it = rand()%(in.size());
+		cout << "Unsorted Random array:" << endl;
+		print_v(in);
 	}
 }
 
-void call_sorting(vector<int> &in, pFn f, Permutation perm = Descend, bool if_print = true)
+void create_proto_arrays()
 {
-	switch (perm)
+	int n = 10;
+	while (1)
 	{
-	case Ascend:
-		cout << "Ascend array:" << endl;
-		make_array_ascend(in);
-		break;
-	case Descend:
-		cout << "Descend array:" << endl;
-		make_array_descend(in);
-		break;
-	case Random:
-		cout << "Randomized array:" << endl;
-		make_array_random(in);
-		break;
-	default:
-		cerr << "Wrong permutation type!!" << endl;
-		exit(1);
-		break;
-	}
-	
-	if (if_print) 
-		print_v(in);
-	
-	long start = clock();	
-	f(in);
-	long end = clock();	
-	double duration = static_cast<double> (end - start)/CLOCKS_PER_SEC; 
-
-	cout << "After sorting array: " << endl;
-	if (if_print) 
-		print_v(in);
-	cout << "Time consuming: " << duration << " seconds" << endl;
-	cout << endl;
-}
-
-void test(pFn f)
-{
-	//while (1)
-	{
-		int n = 10;
-		while (1)
+		cout << "\nPlease input array size(N>0): ";
+		cin >> n;
+		if (cin.eof())
+			exit(0);
+		else if (cin.fail() || n < 0)
 		{
-			cout << "\nPlease input array size(N>0): ";
-			cin >> n;
-			if (cin.eof())
-				exit(0);
-			else if (cin.fail() || n < 0)
-			{
-				cerr << "Invalid value" << endl;
-				cin.clear();
-				cin.ignore(10000, '\n');
-			}
-			else
-				break;
+			cerr << "Invalid value" << endl;
+			cin.clear();
+			cin.ignore(10000, '\n');
 		}
-		vector<int> in(n, 0);
+		else
+			break;
+	}
 
-		bool if_print = true;
-		string s;
+	string s;
+	if (n > 1000)
+		cout << "Too big N, will not display array elements!" << endl;
+	else
+	{
 		while (1)
 		{
 			cerr << "Show arrays?(y/n): ";
@@ -218,29 +192,56 @@ void test(pFn f)
 				break;
 			}
 		}
-
-		call_sorting(in, f, Ascend, if_print);
-		call_sorting(in, f, Descend, if_print);
-		call_sorting(in, f, Random, if_print);
-
-		//cout << "\nLet's do it again..." << endl;
 	}
+
+	create_ascend_array(proto_ascend, n);
+	create_descend_array(proto_descend, n);
+	create_random_array(proto_random, n);
 }
 
+void call_sorting(vector<int> &in, pFn f)
+{
+	long start = clock();	
+	f(in);
+	long end = clock();	
+	double duration = static_cast<double> (end - start)/CLOCKS_PER_SEC; 
+
+	if (if_print) 
+		print_v(in);
+	cout << "Time consuming: " << duration << " seconds" << endl;
+}
+
+void test_sorting(pFn f)
+{
+	vector<int> in_ascend(proto_ascend);
+	cout << "Sorting ascend array, result:" << endl;
+	call_sorting(in_ascend, f);
+
+	vector<int> in_descend(proto_descend);
+	cout << "Sorting descend array, result:" << endl;
+	call_sorting(in_descend, f);
+
+	vector<int> in_random(proto_random);
+	cout << "Sorting random array, result:" << endl;
+	call_sorting(in_random, f);
+}
 
 int main()
 {
 	pFn f = NULL;
-/*
-	cout << "=========== Insertion sort ==========" << endl;
+
+	create_proto_arrays();
+
+	cout << endl;
+	cout << "\n=========== Insertion sort ==========" << endl;
 	f = insertion_sort;
-	test(f);
-	
-	cout << "=========== Selection sort ==========" << endl;
+	test_sorting(f);
+
+	cout << "\n=========== Selection sort ==========" << endl;
 	f = selection_sort;
-	test(f);
-*/	
-	cout << "=========== Merge sort ==========" << endl;
+	test_sorting(f);
+
+	cout << "\n=========== Merge sort ==========" << endl;
 	f = merge_sort;
-	test(f);
+	test_sorting(f);
 }
