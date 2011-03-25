@@ -37,7 +37,7 @@ int main()
 	const int N = 1000;
 	int n = 0;
 	vector<int> in;
-	while(n < 1000)
+	while(n < N)
 		in.push_back(n++);
 
 	int key = -1;
