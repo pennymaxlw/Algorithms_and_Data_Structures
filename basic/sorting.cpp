@@ -84,3 +84,14 @@ void merge_sort(vector<int> &in)
 {
 	merge_sort_work(in, 0, in.size() - 1);
 }
+
+//==== Bubble sort
+void bubble_sort(vector<int> &in)
+{
+	for (int i = 0; i < in.size() - 1; i++)
+		for (int j = in.size() - 1; j > i; j--)
+		{
+			if (in[j] < in[j - 1])
+				swap(in[j], in[j - 1]);
+		}
+}

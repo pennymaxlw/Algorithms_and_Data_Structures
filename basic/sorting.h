@@ -7,5 +7,6 @@ using namespace std;
 void insertion_sort(vector<int> &arr);
 void merge_sort(vector<int> &arr);
 void selection_sort(vector<int> &arr);
+void bubble_sort(vector<int> &arr);
 
 #endif

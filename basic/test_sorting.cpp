@@ -164,4 +164,8 @@ int main()
 	cout << "\n=========== Merge sort ==========" << endl;
 	f = merge_sort;
 	test_sorting(f);
+
+	cout << "\n=========== Bubble sort ==========" << endl;
+	f = bubble_sort;
+	test_sorting(f);
 }
