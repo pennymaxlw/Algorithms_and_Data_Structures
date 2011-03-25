@@ -60,13 +60,13 @@ void merge_sort_merge(vector<int> &in, int p, int q, int r)
 		rtv[i] = in[q + 1 + i];
 
 	i = j = 0;
-	for (int k = p; k <= r; k++)
-	{
-		if (i < ltn && (j >= rtn || ltv[i] <= rtv[j])) //notice inner brackets sequence 
-			in[k] = ltv[i++];
-		else
-			in[k] = rtv[j++];
-	}	
+	int k = p;
+	while (i < ltn && j < rtn)
+		ltv[i] <= rtv[j] ? in[k++] = ltv[i++] : in[k++] = rtv[j++];
+	while (i < ltn)
+		in[k++] = ltv[i++];
+	while (j < rtn)
+		in[k++] = rtv[j++];
 }
 
 void merge_sort_work(vector<int> &in, int p, int r)
