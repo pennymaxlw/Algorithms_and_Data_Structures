@@ -3,7 +3,7 @@ CFLAGS := -Wall -O
 COMPILE_OBJ = $(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 # Default targets
-all : cmd test_sorting binary_searching maximum_subarray.cpp
+all : cmd test_sorting binary_searching 
 
 cmd:
 	if [ ! -d .obj ];then \
