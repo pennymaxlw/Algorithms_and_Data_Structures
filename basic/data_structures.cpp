@@ -45,6 +45,20 @@ void Max_Heap::heapify(int i)
 	}
 }
 
+bool Max_Heap::verify()
+{
+	for (int i = 0; i <= m_size/2; i++)
+	{
+		int l = left(i);
+		int r = right(i);
+		if (l < m_size && m_v[i] < m_v[l])
+			return false;
+		if (r < m_size && m_v[i] < m_v[r])
+			return false;
+	}
+	return true;
+}
+
 void Min_Heap::heapify(int i)
 {
 	int l = left(i);
@@ -64,6 +78,20 @@ void Min_Heap::heapify(int i)
 	}
 }
 
+bool Min_Heap::verify()
+{
+	for (int i = 0; i <= m_size/2; i++)
+	{
+		int l = left(i);
+		int r = right(i);
+		if (l < m_size && m_v[i] > m_v[l])
+			return false;
+		if (r < m_size && m_v[i] > m_v[r])
+			return false;
+	}
+	return true;
+}
+
 Max_Priority_Queue::Max_Priority_Queue(vector<int> &v) : Max_Heap(v)
 {
 	build();
@@ -77,7 +105,7 @@ int Max_Priority_Queue::extract_max()
 		return -1; // not good...
 	}
 	int max = m_v[0];
-	m_v[0] = m_v[m_size];
+	m_v[0] = m_v[m_size - 1];
 	m_size--;
 	heapify(0);
 	return max;
@@ -108,7 +136,15 @@ void Max_Priority_Queue::increase_key(int i, int key)
 void Max_Priority_Queue::insert(int key)
 {
 	m_size++;
-	m_v[m_size] = key - 1;
+	m_v[m_size - 1] = key - 1;
 	increase_key(m_size, key);
 }
 
+int Max_Priority_Queue::del(int i)
+{
+	int key = m_v[i];
+	m_v[i] = m_v[m_size -1];
+	m_size--;
+	heapify(i);
+	return key;
+}

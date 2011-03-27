@@ -10,6 +10,7 @@ class Heap
 		int right(int i) {return 2*i + 2;}
 		int parent(int i) {return (i - 1)/2;}
 		virtual void heapify(int i) = 0;
+		virtual bool verify() {return true;}
 		void build();
 		void sort();
 		vector<int> get_v() {return m_v;}
@@ -24,6 +25,7 @@ class Max_Heap : public Heap
 	public:
 		Max_Heap(vector<int> &v) : Heap(v) {}
 		virtual void heapify(int i);
+		virtual bool verify();
 		~Max_Heap() {}
 };
 
@@ -32,6 +34,7 @@ class Min_Heap : public Heap
 	public:
 		Min_Heap(vector<int> &v) : Heap(v) {}
 		virtual void heapify(int i);
+		virtual bool verify();
 		~Min_Heap() {}
 };
 
@@ -44,4 +47,5 @@ class Max_Priority_Queue : public Max_Heap
 		int extract_max();
 		void increase_key(int i, int key);
 		void insert(int key);
+		int del(int i);
 };
