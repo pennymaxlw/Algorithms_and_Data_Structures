@@ -64,3 +64,51 @@ void Min_Heap::heapify(int i)
 	}
 }
 
+Max_Priority_Queue::Max_Priority_Queue(vector<int> &v) : Max_Heap(v)
+{
+	build();
+}
+
+int Max_Priority_Queue::extract_max()
+{
+	if (m_size < 1)
+	{
+		cerr << "Heap underflow!!" << endl; 
+		return -1; // not good...
+	}
+	int max = m_v[0];
+	m_v[0] = m_v[m_size];
+	m_size--;
+	heapify(0);
+	return max;
+}
+
+void Max_Priority_Queue::increase_key(int i, int key)
+{
+	if (key < m_v[i])
+	{
+		cerr << "New key is smaller than current key!!" << endl;
+		return;
+	}
+	m_v[i] = key;
+	int p = 0;
+	while (i > 0)
+	{
+		p = parent(i);
+		if (m_v[p] < m_v[i])
+		{
+			swap(m_v[i], m_v[p]);
+			i = p;
+		}
+		else
+			break;
+	}
+}
+
+void Max_Priority_Queue::insert(int key)
+{
+	m_size++;
+	m_v[m_size] = key - 1;
+	increase_key(m_size, key);
+}
+
