@@ -1,5 +1,6 @@
 #include "sorting.h"
 #include "helper.h"
+#include "data_structures.h"
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -94,4 +95,12 @@ void bubble_sort(vector<int> &in)
 			if (in[j] < in[j - 1])
 				swap(in[j], in[j - 1]);
 		}
+}
+
+//==== Heap sort
+void heap_sort(vector<int> &in)
+{
+	Max_Heap heap(in);
+	heap.sort();
+	in = heap.get_v();
 }

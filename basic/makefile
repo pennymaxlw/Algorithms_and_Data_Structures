@@ -20,14 +20,17 @@ cmd:
 .obj/maximum_subarray.o : maximum_subarray.cpp helper.h
 	$(COMPILE_OBJ)
 
-.obj/sorting.o : sorting.cpp helper.h sorting.h
+.obj/sorting.o : sorting.cpp helper.h sorting.h data_structures.h
+	$(COMPILE_OBJ)
+
+.obj/data_structures.o : data_structures.cpp data_structures.h helper.h
 	$(COMPILE_OBJ)
 
 .obj/helper.o : helper.cpp helper.h
 	$(COMPILE_OBJ)
 
 # Targets
-test_sorting : .obj/sorting.o .obj/helper.o .obj/test_sorting.o
+test_sorting : .obj/sorting.o .obj/helper.o .obj/test_sorting.o .obj/data_structures.o
 	$(CC) -o test_sorting $^
 
 binary_searching : .obj/helper.o .obj/binary_searching.o

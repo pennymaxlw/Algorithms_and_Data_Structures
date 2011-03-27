@@ -168,4 +168,8 @@ int main()
 	cout << "\n=========== Bubble sort ==========" << endl;
 	f = bubble_sort;
 	test_sorting(f);
+
+	cout << "\n=========== Heap sort ==========" << endl;
+	f = heap_sort;
+	test_sorting(f);
 }
