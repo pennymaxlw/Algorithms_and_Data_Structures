@@ -1,3 +1,4 @@
+#include "binary_searching.h"
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -32,7 +33,7 @@ int binary_searching_recursive(vector<int> &in, int key, int i, int j)
 		return binary_searching_recursive(in, key, k + 1, j);
 } 
 
-int main()
+void test_binary_searching()
 {
 	const int N = 1000;
 	int n = 0;
@@ -47,7 +48,7 @@ int main()
 		cout << "Input key: ";
 		cin >> key;
 		if (cin.eof())
-			return 0;
+			return;
 		else if (cin.fail() || key < 0)
 		{
 			cerr << "Invalid input!" << endl;

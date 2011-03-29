@@ -1,4 +1,5 @@
 #include "helper.h"
+#include "maximum_subarray.h"
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -93,9 +94,4 @@ void test_maximum_subarray()
 	cout << "\n======== brute-force method =========" << endl;
 	f = maximum_subarray_bruteforce;
 	test_maximum_subarray_func(f);
-}
-
-int main()
-{
-	test_maximum_subarray();
 }

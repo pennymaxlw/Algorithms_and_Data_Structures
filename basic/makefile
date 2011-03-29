@@ -1,43 +1,26 @@
+SRC := $(wildcard *.cpp)
+HDR := $(wildcard *.h)
+OBJS_PATH := .obj/
+OBJS := $(patsubst %.cpp,$(OBJS_PATH)%.o,$(SRC))
+TARGET := test
 CC := g++
 CFLAGS := -Wall -O
-COMPILE_OBJ = $(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+INCLUDES :=
+LIBS :=
 
-# Default targets
-all : cmd test_sorting binary_searching 
+all : MKDIR $(TARGET)
 
-cmd:
-	if [ ! -d .obj ];then \
-		mkdir .obj; \
-	fi \
+MKDIR:
+	if [ ! -d $(OBJS_PATH) ];then\
+		mkdir .obj;\
+	fi\
 
-# OBJs
-.obj/test_sorting.o : test_sorting.cpp helper.h sorting.h
-	$(COMPILE_OBJ)
+$(OBJS_PATH)%.o : %.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@ 
 
-.obj/binary_searching.o : binary_searching.cpp helper.h
-	$(COMPILE_OBJ)
-
-.obj/maximum_subarray.o : maximum_subarray.cpp helper.h
-	$(COMPILE_OBJ)
-
-.obj/sorting.o : sorting.cpp helper.h sorting.h data_structures.h
-	$(COMPILE_OBJ)
-
-.obj/data_structures.o : data_structures.cpp data_structures.h helper.h
-	$(COMPILE_OBJ)
-
-.obj/helper.o : helper.cpp helper.h
-	$(COMPILE_OBJ)
-
-# Targets
-test_sorting : .obj/sorting.o .obj/helper.o .obj/test_sorting.o .obj/data_structures.o
-	$(CC) -o test_sorting $^
-
-binary_searching : .obj/helper.o .obj/binary_searching.o
-	$(CC) -o binary_searching $^
-
-maximum_subarray : .obj/helper.o .obj/maximum_subarray.o
-	$(CC) -o binary_searching $^
+$(TARGET) : $(OBJS)
+	$(CC) -o $(TARGET) $(LIBS) $(OBJS) 
 
 clean:
-	rm -rf .obj test_sorting binary_searching maximum_subarray
+	rm -rf $(OBJS_PATH) $(TARGET)
+

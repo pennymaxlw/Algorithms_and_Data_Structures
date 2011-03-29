@@ -1,6 +1,6 @@
 #include "sorting.h"
 #include "helper.h"
-#include "data_structures.h"
+#include "heap.h"
 #include <iostream>
 #include <vector>
 #include <ctime>
@@ -271,7 +271,7 @@ void call_sorting(vector<int> &in, pFn f)
 	cout << "Time: " << duration << " seconds" << endl;
 }
 
-void test_sorting(pFn f)
+void test_single_sorting(pFn f)
 {
 	vector<int> in_ascend(proto_ascend);
 	cout << "Sorting ascend array, result:" << endl;
@@ -284,4 +284,36 @@ void test_sorting(pFn f)
 	vector<int> in_random(proto_random);
 	cout << "Sorting random array, result:" << endl;
 	call_sorting(in_random, f);
+}
+
+void test_sorting()
+{
+	pFn f = NULL;
+
+	create_proto_arrays();
+
+	cout << endl;
+	cout << "\n=========== Insertion sort ==========" << endl;
+	f = insertion_sort;
+	test_single_sorting(f);
+
+	cout << "\n=========== Selection sort ==========" << endl;
+	f = selection_sort;
+	test_single_sorting(f);
+
+	cout << "\n=========== Merge sort ==========" << endl;
+	f = merge_sort;
+	test_single_sorting(f);
+
+	cout << "\n=========== Bubble sort ==========" << endl;
+	f = bubble_sort;
+	test_single_sorting(f);
+
+	cout << "\n=========== Heap sort ==========" << endl;
+	f = heap_sort;
+	test_single_sorting(f);
+
+	cout << "\n=========== Quick sort ==========" << endl;
+	f = quick_sort;
+	test_single_sorting(f);
 }

@@ -15,7 +15,6 @@ void heap_sort(vector<int> &arr);
 void quick_sort(vector<int> &arr);
 
 //== Testing
-void create_proto_arrays();
-void test_sorting(pFn f);
+void test_sorting();
 
 #endif
