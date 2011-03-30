@@ -28,7 +28,7 @@ void Stack<T, SIZE>::traverse(void (*f)(T&))
 		f(m_data[i]);
 }
 
-void print(int& i)
+static void print(int& i)
 {
 	cout << i << " ";
 }
