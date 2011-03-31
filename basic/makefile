@@ -22,7 +22,7 @@ MKDIR:
 		mkdir .obj;\
 	fi\
 
-$(OBJS_PATH)%.o : %.cpp
+$(OBJS_PATH)%.o : %.cpp %.h
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@ 
 
 $(TARGET) : $(OBJS)

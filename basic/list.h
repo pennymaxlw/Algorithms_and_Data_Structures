@@ -55,7 +55,7 @@ class List
 			}
 		}
 
-	private:
+	protected:
 		TNode* m_phead;
 };
 
