@@ -10,11 +10,6 @@ LIBS := -L../basic -lmybasic
 
 all : $(TARGET)
 
-MKDIR:
-	if [ ! -d $(OBJS_PATH) ];then\
-		mkdir .obj;\
-	fi\
-
 % : %.cpp
 	$(CC) $(CFLAGS) $< $(INCLUDES) $(LIBS) -o $@ 
 

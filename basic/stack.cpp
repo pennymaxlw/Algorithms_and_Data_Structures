@@ -1,32 +1,4 @@
 #include "stack.h"
-#include <stdexcept>
-#include <iostream>
-using namespace std;
-
-template<typename T, size_t SIZE>
-void Stack<T, SIZE>::push(const T& t)
-{
-	if (m_size >= SIZE)
-		throw std::overflow_error("stack is overflow");
-	m_data[m_size++] = t;
-}
-
-template<typename T, size_t SIZE>
-T& Stack<T, SIZE>::pop()
-{
-	if (empty())
-		throw std::underflow_error("stack is underflow");
-	return m_data[--m_size];
-}
-
-template<typename T, size_t SIZE>
-void Stack<T, SIZE>::traverse(void (*f)(T&))
-{
-	if (empty())
-		return;
-	for (size_t i = 0; i < m_size; i++)
-		f(m_data[i]);
-}
 
 static void print(int& i)
 {
@@ -41,10 +13,14 @@ void test_stack()
 	cout << "push 3" << endl; stack.push(3);
 	cout << "push 4" << endl; stack.push(4);
 	stack.traverse(print); cout << endl;
-	cout << "pop "<< stack.pop() << endl;
-	cout << "pop "<< stack.pop() << endl;
-	cout << "pop "<< stack.pop() << endl;
-	cout << "pop "<< stack.pop() << endl;
+	cout << "pop "<< stack.top() << endl;
+	stack.pop();
+	cout << "pop "<< stack.top() << endl;
+	stack.pop();
+	cout << "pop "<< stack.top() << endl;
+	stack.pop();
+	cout << "pop "<< stack.top() << endl;
+	stack.pop();
 	stack.traverse(print); cout << endl;
 	
 	cout << "push 1" << endl; stack.push(1);
