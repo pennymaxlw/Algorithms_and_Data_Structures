@@ -7,5 +7,6 @@ using namespace std;
 void swap(int &i, int &j);
 void print_v(vector<int> &arr);
 void randomize_inplace(vector<int> &arr);
+void print_int(const int &i);
 
 #endif

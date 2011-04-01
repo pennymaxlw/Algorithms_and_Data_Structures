@@ -11,6 +11,11 @@ void swap(int &i, int &j)
 	j = t;
 }
 
+void print_int(const int &i)
+{
+	cout << i << " ";
+}
+
 void print_v(vector<int> &arr)
 {
 	for (int i = 0; i < arr.size(); ++i)
