@@ -1,16 +1,23 @@
+SRC := $(wildcard *.cpp)
+HDR := $(wildcard *.h)
+OBJS_PATH := .obj/
+OBJS := $(patsubst %.cpp,$(OBJS_PATH)%.o,$(SRC))
+TARGET := $(patsubst %.cpp,%,$(SRC))
 CC := g++
 CFLAGS := -Wall -O
-BASIC_PATH := ../basic
-BASIC_OBJS := $(BASIC_PATH)/.obj
-INCLUDES := -I$(BASIC_PATH)
-BUILD = $(CC) $(CFLAGS) $(INCLUDES) -o $@ $^
+INCLUDES := -I../basic/
+LIBS := -L../basic -lmybasic
 
-all : exe2.3.7 prb2.4
+all : $(TARGET)
 
-exe2.3.7 : exe2.3.7.cpp $(BASIC_OBJS)/helper.o  $(BASIC_OBJS)/sorting.o
-	$(BUILD)
+MKDIR:
+	if [ ! -d $(OBJS_PATH) ];then\
+		mkdir .obj;\
+	fi\
 
-prb2.4 : prb2.4.cpp $(BASIC_OBJS)/helper.o  $(BASIC_OBJS)/sorting.o
-	$(BUILD)
+% : %.cpp
+	$(CC) $(CFLAGS) $< $(INCLUDES) $(LIBS) -o $@ 
 
 clean:
+	rm -rf $(TARGET)
+
