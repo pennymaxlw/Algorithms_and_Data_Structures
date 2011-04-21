@@ -13,7 +13,13 @@ void test_list()
 	list.traverse(print_int);
 	cout << endl;
 
-	list.clear();
+	cout << "reverse it now!" << endl;
+	list.reverse();
+	list.traverse(print_int);
+	cout << endl;
+	
+	cout << "reverse it now!" << endl;
+	list.reverse();
 	list.traverse(print_int);
 	cout << endl;
 }

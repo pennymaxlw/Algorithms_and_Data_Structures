@@ -55,6 +55,21 @@ class List
 			}
 		}
 
+		void reverse()
+		{
+			TNode* p = NULL;
+			TNode* q = m_phead;
+			TNode* r = NULL;
+			while (q)
+			{
+				r = q->next;
+				q->next = p;
+				p = q;
+				q = r;
+			}
+			m_phead = p;
+		}
+
 	private:
 		TNode* m_phead;
 };
