@@ -7,6 +7,7 @@
 #include "deque.h"
 #include "list.h"
 #include "binary_searching.h"
+#include "tree.h"
 #include <iostream>
 using namespace std;
 
@@ -19,5 +20,6 @@ int main()
 	//test_stack();
 	//test_queue();
 	//test_deque();
-	test_list();
+	//test_list();
+	test_tree();
 }
