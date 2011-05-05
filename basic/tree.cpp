@@ -20,11 +20,13 @@ void test_bintree()
 	b.make_tree(2, d, e);
 	c.make_tree(3, f, g);
 	
-	a.make_tree(1, b, c);
+	a.make_tree(1, b, t);
 	
 	PrintVisitor<int> v;
-	cout << "display tree" << endl;
+	cout << "display tree, method 1" << endl;
 	a.display(v, 3);
+	cout << "display tree, method 2" << endl;
+	a.display2(v, 2);
 	
 	cout << "Pre order" << endl;
 	a.pre_order(v); 

@@ -101,6 +101,7 @@ class BinTree
 		void break_tree(const T& e, BinTree<T>& l, BinTree<T>& r);
 		void level_order(Visitor<T>& visitor);
 		void display(Visitor<T>& visitor, int width);
+		void display2(Visitor<T>& visitor, int width);
 		size_t height() const
 		{
 			return height(root) - 1; // need to subtract 1 because root height is 0
@@ -294,5 +295,68 @@ void BinTree<T>::display(Visitor<T>& visitor, int width)
 	}
 }
 
+template<typename T>
+void BinTree<T>::display2(Visitor<T>& visitor, int width)
+{
+	if (!root)
+	{
+		return;
+	}
+
+	queue<NodePos<T> > que;
+	NodePos<T> flag = {NULL, -1};
+	size_t sz = pow(2, height() + 1) - 1;
+	sz = sz * 3;
+	NodePos<T> np = {root, sz / 2 + 1};
+	que.push(np);
+	que.push(flag);
+	size_t pos = 0; 
+	sz = sz / 2;
+
+	while (!que.empty())
+	{
+		np = que.front();
+		que.pop();
+
+		if (!np.node)
+		{
+			cout << "\n";
+			if (!que.empty())
+			{
+				que.push(flag);
+			}
+			sz = sz / 2;
+			pos = 0;
+		}
+		else
+		{
+			//cout << "data: " << np.node->data << " np.pos: " << np.pos << endl;
+			//cout << "diff: " << np.pos - pos - 1 << endl;
+			for (int i = 0; i < np.pos - pos - 1; i++)
+			{
+				cout <<  " ";
+			}
+			pos = np.pos + 1; //???????
+			cout << setw(width) << np.node->data;
+			if (np.node->left)
+			{
+				NodePos<T> tmp = {np.node->left, np.pos - sz / 2 - 1};			
+				que.push(tmp);
+			}
+			if (np.node->right)
+			{
+				NodePos<T> tmp = {np.node->right, np.pos + sz / 2 + 1};			
+				que.push(tmp);
+			}
+		}
+	}
+}
+
 
 #endif
+
+
+
+
+
+
