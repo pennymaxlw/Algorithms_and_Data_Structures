@@ -21,5 +21,5 @@ int main()
 	//test_queue();
 	//test_deque();
 	//test_list();
-	test_tree();
+	test_bintree();
 }
