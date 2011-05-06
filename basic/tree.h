@@ -5,6 +5,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <queue>
+#include <stack>
 #include <cmath>
 #include <iomanip>
 using namespace std;
@@ -98,6 +99,18 @@ class BinTree
 		{
 			post_order(visitor, root);
 		}
+		void pre_order_iterative(Visitor<T>& visitor)
+		{
+			pre_order_iterative(visitor, root);
+		}
+		void in_order_iterative(Visitor<T>& visitor)
+		{
+			in_order_iterative(visitor, root);
+		}
+		void post_order_iterative(Visitor<T>& visitor)
+		{
+			post_order_iterative(visitor, root);
+		}
 		void make_tree(const T& e, BinTree<T>& l, BinTree<T>& r);
 		void break_tree(const T& e, BinTree<T>& l, BinTree<T>& r);
 		void level_order(Visitor<T>& visitor);
@@ -115,6 +128,9 @@ class BinTree
 		void pre_order(Visitor<T>& visitor, BinTreeNode<T>* node);
 		void in_order(Visitor<T>& visitor, BinTreeNode<T>* node);
 		void post_order(Visitor<T>& visitor, BinTreeNode<T>* node);
+		void pre_order_iterative(Visitor<T>& visitor, BinTreeNode<T>* node);
+		void in_order_iterative(Visitor<T>& visitor, BinTreeNode<T>* node);
+		void post_order_iterative(Visitor<T>& visitor, BinTreeNode<T>* node);
 		size_t height(const BinTreeNode<T>* p) const;
 		void destroy();
 		void get_all_left_n(Add1Visitor<T>& visitor, BinTreeNode<T>* node);
@@ -182,6 +198,104 @@ void BinTree<T>::post_order(Visitor<T>& visitor, BinTreeNode<T>* node)
 		post_order(visitor, node->left);
 		post_order(visitor, node->right);
 		visitor.visit(node);
+	}
+}
+
+template<typename T>
+void BinTree<T>::pre_order_iterative(Visitor<T>& visitor, BinTreeNode<T>* node)
+{
+	if (empty())
+	{
+		return;
+	}
+
+	stack<BinTreeNode<T>*> stk;
+	BinTreeNode<T>* curr = node;
+
+	while (!stk.empty() || curr)
+	{
+		if (curr)
+		{
+			visitor.visit(curr);
+			stk.push(curr);
+			//cout << "push: " << curr->data << endl;
+			curr = curr->left;
+		}
+		else
+		{
+			curr = stk.top();
+			stk.pop();
+			//cout << "pop: " << curr->data << endl;
+			curr = curr->right;
+		}
+	}
+}
+
+template<typename T>
+void BinTree<T>::in_order_iterative(Visitor<T>& visitor, BinTreeNode<T>* node)
+{
+	if (empty())
+	{
+		return;
+	}
+
+	stack<BinTreeNode<T>*> stk;
+	BinTreeNode<T>* curr = node;
+
+	while (!stk.empty() || curr)
+	{
+		if (curr)
+		{
+			stk.push(curr);
+			//cout << "push: " << curr->data << endl;
+			curr = curr->left;
+		}
+		else
+		{
+			curr = stk.top();
+			stk.pop();
+			//cout << "pop: " << curr->data << endl;
+			visitor.visit(curr);
+			curr = curr->right;
+		}
+	}
+}
+
+template<typename T>
+void BinTree<T>::post_order_iterative(Visitor<T>& visitor, BinTreeNode<T>* node)
+{
+	if (empty())
+	{
+		return;
+	}
+
+	stack<BinTreeNode<T>*> stk;
+	BinTreeNode<T>* curr = node;
+	BinTreeNode<T>* last = NULL;
+
+	while (!stk.empty() || curr)
+	{
+		if (curr)
+		{
+			stk.push(curr);
+			//cout << "push: " << curr->data << endl;
+			curr = curr->left;
+		}
+		else
+		{
+			curr = stk.top();
+			if (!curr->right || curr->right == last)	
+			{
+				visitor.visit(curr);
+				stk.pop();
+				last = curr;
+				curr = NULL;
+			}
+			else
+			{
+				curr = curr->right;	
+			}
+		}
 	}
 }
 

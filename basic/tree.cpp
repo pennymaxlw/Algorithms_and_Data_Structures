@@ -36,14 +36,20 @@ void test_bintree()
 	cout << "\n****display tree, expand" << endl;
 	a.display_expand(2);
 	
-	cout << "\n****Pre order" << endl;
+	cout << "\n****pre order" << endl;
 	a.pre_order(v); 
+	cout << "\n****pre order iterative" << endl;
+	a.pre_order_iterative(v);
 	cout << endl;
 	cout << "\n****in order" << endl;
 	a.in_order(v);
+	cout << "\n****in order iterative" << endl;
+	a.in_order_iterative(v);
 	cout << endl;
 	cout << "\n****post order" << endl;
 	a.post_order(v);
+	cout << "\n****post order iterative" << endl;
+	a.post_order_iterative(v);
 	cout << endl;
 	cout << "\n****level order" << endl;
 	a.level_order(v);
