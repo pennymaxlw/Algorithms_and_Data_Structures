@@ -5,6 +5,8 @@
 #include <iostream>
 #include <stdexcept>
 #include <queue>
+#include <cmath>
+#include <iomanip>
 using namespace std;
 
 template<typename T> class BinTreeNode;
@@ -24,7 +26,7 @@ class PrintVisitor : public Visitor<T>
 		~PrintVisitor() {}
 		void visit(BinTreeNode<T>* p)
 		{
-			cout << p->data;	
+			cout << p->data << " ";	
 		}
 };
 
@@ -98,6 +100,7 @@ class BinTree
 		void make_tree(const T& e, BinTree<T>& l, BinTree<T>& r);
 		void break_tree(const T& e, BinTree<T>& l, BinTree<T>& r);
 		void level_order(Visitor<T>& visitor);
+		void display(Visitor<T>& visitor, int width);
 		size_t height() const
 		{
 			return height(root) - 1; // need to subtract 1 because root height is 0
@@ -230,5 +233,66 @@ void BinTree<T>::destroy()
 	DeleteVisitor<T> v;
 	post_order(v);
 }
+
+template<typename T>
+struct NodePos
+{
+	BinTreeNode<T>* node;
+	int pos;
+};
+
+// width: how many characters
+// pos: proportional with width(not for single character)
+template<typename T>
+void BinTree<T>::display(Visitor<T>& visitor, int width)
+{
+	size_t h = height();
+	size_t root_pos = (pow(2, h + 1) - 1)/ 2; // half of total number of nodes
+	root_pos += root_pos / 2; // add some buffer width for better display 
+	int step = root_pos / 2; 
+	int pos = 0;
+	queue<NodePos<T> > que;
+	NodePos<T> np = {root, root_pos};
+	NodePos<T> flag = {NULL, -1};
+	que.push(np);
+	que.push(flag);
+	
+	while (!que.empty())
+	{
+		np = que.front();
+		que.pop();
+		if (!np.node) // if NULL, which means it's end of a level
+		{
+			cout << endl;
+			pos = 0;
+			step /= 2;
+			if (!que.empty())
+			{
+				que.push(flag);
+			}
+		}
+		else
+		{
+			//cout << "np.pos: " << np.pos;
+			for (int i = 0; i < np.pos - pos - 1; i++)
+			{
+				cout << setw(width) << " "; 
+			}
+			cout << setw(width) << np.node->data;
+			pos = np.pos;
+			if (np.node->left)
+			{
+				NodePos<T> tmp = {np.node->left, np.pos - step};
+				que.push(tmp);
+			}
+			if (np.node->right)
+			{
+				NodePos<T> tmp = {np.node->right, np.pos + step};
+				que.push(tmp);
+			}
+		}
+	}
+}
+
 
 #endif

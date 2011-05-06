@@ -55,7 +55,6 @@ class List
 			}
 		}
 
-	protected:
 		void reverse()
 		{
 			TNode* p = NULL;
