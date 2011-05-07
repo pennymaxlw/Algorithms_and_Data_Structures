@@ -123,6 +123,10 @@ class BinTree
 		}
 		size_t size();
 		BinTree* clone();
+		void rotate()
+		{
+			rotate(root);
+		}
 	
 	private:
 		void pre_order(Visitor<T>& visitor, BinTreeNode<T>* node);
@@ -132,6 +136,7 @@ class BinTree
 		void in_order_iterative(Visitor<T>& visitor, BinTreeNode<T>* node);
 		void post_order_iterative(Visitor<T>& visitor, BinTreeNode<T>* node);
 		size_t height(const BinTreeNode<T>* p) const;
+		BinTreeNode<T>* rotate(BinTreeNode<T>* node);
 		void destroy();
 		void get_all_left_n(Add1Visitor<T>& visitor, BinTreeNode<T>* node);
 		BinTreeNode<T>* clone(BinTreeNode<T>* node);
@@ -578,6 +583,20 @@ BinTree<T>* BinTree<T>::clone()
 	BinTreeNode<T>* pn = clone(root);
 	BinTree<T>* p = new BinTree<T>(pn);
 	return p;
+}
+
+template<typename T>
+BinTreeNode<T>* BinTree<T>::rotate(BinTreeNode<T>* node)
+{
+	if (node)
+	{
+		BinTreeNode<T>* l = rotate(node->left);	
+		BinTreeNode<T>* r = rotate(node->right);	
+		node->left = r;
+		node->right = l;
+		return node;
+	}
+	return NULL;
 }
 
 #endif

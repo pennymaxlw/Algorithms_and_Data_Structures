@@ -61,5 +61,9 @@ void test_bintree()
 	tp->display_compact_connector(2);
 	cout << "\n****in order" << endl;
 	tp->in_order(v);
+	cout << "\n****rotate" << endl;
+	tp->rotate();
+	cout << "\n****display tree, compact and connector" << endl;
+	tp->display_compact_connector(2);
 	delete tp;
 }
