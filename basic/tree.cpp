@@ -14,35 +14,46 @@ void test_bintree()
 	
 	d.make_tree(4, h, i);
 	e.make_tree(5, j, k);
+	//e.make_tree(5, t, t);
 	f.make_tree(6, l, m);
+	//f.make_tree(6, t, m);
 	g.make_tree(7, n, o);
 
 	b.make_tree(2, d, e);
 	c.make_tree(3, f, g);
 	
-	a.make_tree(1, b, t);
+	//a.make_tree(1, t, c);
+	a.make_tree(1, b, c);
 	
+	cout << "\n****size: " << a.size() << endl;
+	cout << "\n****height: " << a.height() << endl;
+
 	PrintVisitor<int> v;
-	cout << "display tree, method 1" << endl;
-	a.display(v, 3);
-	cout << "display tree, method 2" << endl;
-	a.display2(v, 2);
+	cout << "\n****display tree, compact and connector" << endl;
+	a.display_compact_connector(2);
+	cout << "\n****display tree, compact" << endl;
+	a.display_compact(2);
+	cout << "\n****display tree, expand" << endl;
+	a.display_expand(2);
 	
-	cout << "Pre order" << endl;
+	cout << "\n****Pre order" << endl;
 	a.pre_order(v); 
 	cout << endl;
-	cout << "in order" << endl;
+	cout << "\n****in order" << endl;
 	a.in_order(v);
 	cout << endl;
-	cout << "post order" << endl;
+	cout << "\n****post order" << endl;
 	a.post_order(v);
 	cout << endl;
-	cout << "level order" << endl;
+	cout << "\n****level order" << endl;
 	a.level_order(v);
 	cout << endl;
-	
-	cout << "size: " << a.size() << endl;
 
-	cout << "height: " << a.height() << endl;
-
+	cout << "\n****clone tree" << endl;
+	BinTree<int>* tp = a.clone();
+	cout << "\n****display tree, compact and connector" << endl;
+	tp->display_compact_connector(2);
+	cout << "\n****in order" << endl;
+	tp->in_order(v);
+	delete tp;
 }

@@ -26,7 +26,7 @@ class PrintVisitor : public Visitor<T>
 		~PrintVisitor() {}
 		void visit(BinTreeNode<T>* p)
 		{
-			cout << p->data << " ";	
+			cout << p->data << "(" << p->left_n << ")" << " ";	
 		}
 };
 
@@ -65,7 +65,7 @@ template<typename T>
 class BinTreeNode
 {
 	public:
-		BinTreeNode() : left(NULL), right(NULL) {}
+		BinTreeNode() : left(NULL), right(NULL), left_n(0) {}
 		BinTreeNode(const T& e, BinTreeNode* l = NULL, BinTreeNode* r = NULL) 
 			: data(e), left(l), right(r) {}
 	
@@ -73,13 +73,14 @@ class BinTreeNode
 		T data;
 		BinTreeNode* left;
 		BinTreeNode* right;
+		size_t left_n; 		// optional
 };
 
 template<typename T>
 class BinTree
 {
 	public:
-		BinTree() : root(NULL) {}
+		BinTree(BinTreeNode<T>* p = NULL) : root(p) {}
 		~BinTree() {destroy(); root = NULL;}
 		bool empty() const
 		{
@@ -100,13 +101,15 @@ class BinTree
 		void make_tree(const T& e, BinTree<T>& l, BinTree<T>& r);
 		void break_tree(const T& e, BinTree<T>& l, BinTree<T>& r);
 		void level_order(Visitor<T>& visitor);
-		void display(Visitor<T>& visitor, int width);
-		void display2(Visitor<T>& visitor, int width);
+		void display_compact(int width);
+		void display_compact_connector(int width);
+		void display_expand(int width);
 		size_t height() const
 		{
 			return height(root) - 1; // need to subtract 1 because root height is 0
 		}
 		size_t size();
+		BinTree* clone();
 	
 	private:
 		void pre_order(Visitor<T>& visitor, BinTreeNode<T>* node);
@@ -114,6 +117,8 @@ class BinTree
 		void post_order(Visitor<T>& visitor, BinTreeNode<T>* node);
 		size_t height(const BinTreeNode<T>* p) const;
 		void destroy();
+		void get_all_left_n(Add1Visitor<T>& visitor, BinTreeNode<T>* node);
+		BinTreeNode<T>* clone(BinTreeNode<T>* node);
 
 	private:
 		BinTreeNode<T>* root;
@@ -242,61 +247,149 @@ struct NodePos
 	int pos;
 };
 
+template<typename T>
+struct NodeDis
+{
+	BinTreeNode<T>* node;
+	char connector;
+};
+
+
+template<typename T>
+void BinTree<T>::get_all_left_n(Add1Visitor<T>& visitor, BinTreeNode<T>* node)
+{
+	if (node)
+	{
+		get_all_left_n(visitor, node->left);
+		node->left_n = visitor.get_num();
+		visitor.visit(node);
+		get_all_left_n(visitor, node->right);
+	}	
+}
+
 // width: how many characters
 // pos: proportional with width(not for single character)
 template<typename T>
-void BinTree<T>::display(Visitor<T>& visitor, int width)
+void BinTree<T>::display_compact_connector(int width)
 {
-	size_t h = height();
-	size_t root_pos = (pow(2, h + 1) - 1)/ 2; // half of total number of nodes
-	root_pos += root_pos / 2; // add some buffer width for better display 
-	int step = root_pos / 2; 
-	int pos = 0;
-	queue<NodePos<T> > que;
-	NodePos<T> np = {root, root_pos};
-	NodePos<T> flag = {NULL, -1};
-	que.push(np);
-	que.push(flag);
+	Add1Visitor<T> v;
+	get_all_left_n(v, root);
+	//PrintVisitor<T> print_v;
+	//in_order(print_v, root);
+	//cout << endl;
+	//return;
+	deque<NodeDis<T> > que;
+	NodeDis<T> np = {root, '#'};
+	NodeDis<T> flag = {NULL, '#'};
+	que.push_back(np);
+	que.push_back(flag);
+	size_t pos = 0;
 	
 	while (!que.empty())
 	{
 		np = que.front();
-		que.pop();
+		que.pop_front();
+
 		if (!np.node) // if NULL, which means it's end of a level
 		{
-			cout << endl;
-			pos = 0;
-			step /= 2;
+			cout << "\n";
 			if (!que.empty())
 			{
-				que.push(flag);
+				pos = 0;
+				typename deque<NodeDis<T> >::iterator it;
+				for (it = que.begin(); it != que.end(); it++)
+				{
+					//cout << "diff: " << it->node->left_n - pos << endl;
+					for (int i = 0; i < it->node->left_n - pos; i++)
+					{
+						cout << setw(width) << " "; 
+					}
+					cout << setw(width) << it->connector;
+					pos = it->node->left_n + 1;
+				}
+				cout << "\n";
+				
+				que.push_back(flag);
 			}
+			pos = 0;
 		}
 		else
 		{
-			//cout << "np.pos: " << np.pos;
-			for (int i = 0; i < np.pos - pos - 1; i++)
+			for (int i = 0; i < np.node->left_n - pos; i++)
 			{
 				cout << setw(width) << " "; 
 			}
 			cout << setw(width) << np.node->data;
-			pos = np.pos;
+			//cout << setw(width) << np.connector;
+			pos = np.node->left_n + 1;
 			if (np.node->left)
 			{
-				NodePos<T> tmp = {np.node->left, np.pos - step};
-				que.push(tmp);
+				NodeDis<T> tmp = {np.node->left, '/'};
+				que.push_back(tmp);
 			}
 			if (np.node->right)
 			{
-				NodePos<T> tmp = {np.node->right, np.pos + step};
-				que.push(tmp);
+				NodeDis<T> tmp = {np.node->right, '\\'};
+				que.push_back(tmp);
+			}
+		}
+	}
+}
+
+// width: how many characters
+// pos: proportional with width(not for single character)
+template<typename T>
+void BinTree<T>::display_compact(int width)
+
+{
+	Add1Visitor<T> v;
+	get_all_left_n(v, root);
+	//PrintVisitor<T> print_v;
+	//in_order(print_v, root);
+	//cout << endl;
+	//return;
+	queue<BinTreeNode<T>*> que;
+	que.push(root);
+	que.push(NULL);
+	BinTreeNode<T>* p = NULL;
+	size_t pos = 0;
+	
+	while (!que.empty())
+	{
+		p = que.front();
+		que.pop();
+		if (!p) // if NULL, which means it's end of a level
+		{
+			cout << "\n";
+			if (!que.empty())
+			{
+				que.push(NULL);
+				pos = 0;
+			}
+		}
+		else
+		{
+			//cout << "pos: " << pos;
+			for (int i = 0; i < p->left_n - pos; i++)
+			{
+				cout << setw(width) << " "; 
+			}
+			cout << setw(width) << p->data;
+			pos = p->left_n + 1;
+			if (p->left)
+			{
+				que.push(p->left);
+			}
+			if (p->right)
+			{
+				que.push(p->right);
 			}
 		}
 	}
 }
 
 template<typename T>
-void BinTree<T>::display2(Visitor<T>& visitor, int width)
+void BinTree<T>::display_expand(int width)
 {
 	if (!root)
 	{
@@ -306,7 +399,6 @@ void BinTree<T>::display2(Visitor<T>& visitor, int width)
 	queue<NodePos<T> > que;
 	NodePos<T> flag = {NULL, -1};
 	size_t sz = pow(2, height() + 1) - 1;
-	sz = sz * 3;
 	NodePos<T> np = {root, sz / 2 + 1};
 	que.push(np);
 	que.push(flag);
@@ -334,9 +426,9 @@ void BinTree<T>::display2(Visitor<T>& visitor, int width)
 			//cout << "diff: " << np.pos - pos - 1 << endl;
 			for (int i = 0; i < np.pos - pos - 1; i++)
 			{
-				cout <<  " ";
+				cout <<  setw(width) << " ";
 			}
-			pos = np.pos + 1; //???????
+			pos = np.pos; //???????
 			cout << setw(width) << np.node->data;
 			if (np.node->left)
 			{
@@ -352,6 +444,27 @@ void BinTree<T>::display2(Visitor<T>& visitor, int width)
 	}
 }
 
+template<typename T>
+BinTreeNode<T>* BinTree<T>::clone(BinTreeNode<T>* node)
+{
+	if (node)
+	{
+		BinTreeNode<T>* l = clone(node->left);
+		BinTreeNode<T>* r = clone(node->right);
+		BinTreeNode<T>* np = new BinTreeNode<T>(node->data, l, r);
+		//cout << "clone data: " << node->data << endl;
+		return np;
+	}	
+	return NULL;
+}
+
+template<typename T>
+BinTree<T>* BinTree<T>::clone()
+{
+	BinTreeNode<T>* pn = clone(root);
+	BinTree<T>* p = new BinTree<T>(pn);
+	return p;
+}
 
 #endif
 
