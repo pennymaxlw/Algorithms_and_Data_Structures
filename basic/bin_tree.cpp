@@ -1,4 +1,4 @@
-#include "tree.h"
+#include "bin_tree.h"
 
 void test_bintree()
 {

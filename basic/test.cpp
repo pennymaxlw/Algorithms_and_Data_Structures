@@ -7,7 +7,8 @@
 #include "deque.h"
 #include "list.h"
 #include "binary_searching.h"
-#include "tree.h"
+#include "bin_tree.h"
+#include "bs_tree.h"
 #include <iostream>
 using namespace std;
 
@@ -21,5 +22,6 @@ int main()
 	//test_queue();
 	//test_deque();
 	//test_list();
-	test_bintree();
+	//test_bintree();
+	test_bs_tree();
 }

@@ -1,5 +1,5 @@
-#ifndef TREE_H_
-#define TREE_H_
+#ifndef BIN_TREE_H_
+#define BIN_TREE_H_
 
 #include <cstddef>
 #include <iostream>
@@ -27,7 +27,8 @@ class PrintVisitor : public Visitor<T>
 		~PrintVisitor() {}
 		void visit(BinTreeNode<T>* p)
 		{
-			cout << p->data << "(" << p->left_n << ")" << " ";	
+			//cout << p->data << "(" << p->left_n << ")" << " ";	
+			cout << p->data << " ";	
 		}
 };
 
@@ -82,7 +83,7 @@ class BinTree
 {
 	public:
 		BinTree(BinTreeNode<T>* p = NULL) : root(p) {}
-		~BinTree() {destroy(); root = NULL;}
+		virtual ~BinTree() {destroy(); root = NULL;}
 		bool empty() const
 		{
 			return root == NULL ? true : false;
@@ -128,7 +129,7 @@ class BinTree
 			rotate(root);
 		}
 	
-	private:
+	protected:
 		void pre_order(Visitor<T>& visitor, BinTreeNode<T>* node);
 		void in_order(Visitor<T>& visitor, BinTreeNode<T>* node);
 		void post_order(Visitor<T>& visitor, BinTreeNode<T>* node);
@@ -141,7 +142,7 @@ class BinTree
 		void get_all_left_n(Add1Visitor<T>& visitor, BinTreeNode<T>* node);
 		BinTreeNode<T>* clone(BinTreeNode<T>* node);
 
-	private:
+	protected:
 		BinTreeNode<T>* root;
 };
 
