@@ -51,18 +51,27 @@ void test_bs_tree()
 		cerr << "not found!!" << endl;
 	}
 
-	cout << "\n***input successor: ";
-	int s;
-	while (cin >> i)
+	//cout << "\n***input successor: ";
+	//int s;
+	//while (cin >> i)
+	//{
+	//	if (tree.successor(i, s))
+	//	{
+	//		cout << "successor is: " << s << endl;
+	//	}
+	//	else
+	//	{
+	//		cerr << "no successor" << endl;
+	//	}
+	//	cout << "\n***input successor: ";
+	//}
+
+	cin.clear();
+	while (cin)
 	{
-		if (tree.successor(i, s))
-		{
-			cout << "successor is: " << s << endl;
-		}
-		else
-		{
-			cerr << "no successor" << endl;
-		}
-		cout << "\n***input successor: ";
+		cout << "\n***LCA, input 2 keys" << endl;
+		int key1, key2;
+		cin >> key1 >> key2;
+		cout << "LCA: " << tree.lca(key1, key2) << endl;
 	}
 }

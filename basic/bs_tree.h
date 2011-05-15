@@ -15,8 +15,22 @@ class BSTree : public BinTree<T>
 		bool predecessor(const T& key, T &e) const;
 		BSTree<T>& insert(const T& key);
 		BSTree<T>& del(const T& key);
+		T lca(const T& key1, const T& key2)
+		{
+			BinTreeNode<T>* ret = NULL;
+			lca(key1, key2, root, ret);
+			if (ret)
+			{
+				return ret->data;
+			}
+			else
+			{
+				return T();
+			}
+		}
 	protected:
 		bool search_node_by_key(const T& key, BinTreeNode<T>& nd) const;
+		int lca(const T& key1, const T& key2, BinTreeNode<T>* p, BinTreeNode<T> *&ret);
 };
 
 void test_bs_tree();
@@ -274,7 +288,39 @@ bool BSTree<T>::successor(const T& key, T &e) const
 template<typename T>
 bool BSTree<T>::predecessor(const T& key, T &e) const
 {
-	
+	return false;	
+}
+
+// 二叉树两个结点的最低共同父结点
+template<typename T>
+int BSTree<T>::lca(const T& key1, const T& key2, 
+					BinTreeNode<T>* p, BinTreeNode<T> *&ret)
+{
+	if (p)
+	{
+		//cout << p->data << endl;
+		int cnt1 = lca(key1, key2, p->left, ret);
+		int cnt2 = lca(key1, key2, p->right, ret);
+		int cnt = cnt1 + cnt2;
+		if (cnt == 2 && !ret)
+		{
+			//cout << "found lca: " << p->data << endl;
+			ret = p;
+		}
+		bool match = p->data ==key1 || p->data == key2;
+		if (match || cnt)
+		{
+			if (match && cnt == 1)
+			{
+				return 2;
+			}
+			else
+			{
+				return 1;
+			}
+		}
+	}
+	return 0;
 }
 
 #endif
