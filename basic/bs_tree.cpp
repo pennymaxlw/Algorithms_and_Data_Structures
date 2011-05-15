@@ -50,4 +50,19 @@ void test_bs_tree()
 	{
 		cerr << "not found!!" << endl;
 	}
+
+	cout << "\n***input successor: ";
+	int s;
+	while (cin >> i)
+	{
+		if (tree.successor(i, s))
+		{
+			cout << "successor is: " << s << endl;
+		}
+		else
+		{
+			cerr << "no successor" << endl;
+		}
+		cout << "\n***input successor: ";
+	}
 }

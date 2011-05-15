@@ -11,8 +11,12 @@ class BSTree : public BinTree<T>
 		bool search(const T& key, T& e) const;
 		bool minimum(T& e) const;
 		bool maximum(T& e) const;
+		bool successor(const T& key, T &e) const;
+		bool predecessor(const T& key, T &e) const;
 		BSTree<T>& insert(const T& key);
 		BSTree<T>& del(const T& key);
+	protected:
+		bool search_node_by_key(const T& key, BinTreeNode<T>& nd) const;
 };
 
 void test_bs_tree();
@@ -198,6 +202,79 @@ BSTree<T>& BSTree<T>::del(const T& key)
 	delete p;
 
 	return *this;
+}
+
+template<typename T>
+bool BSTree<T>::search_node_by_key(const T& key, BinTreeNode<T>& nd) const
+{
+	BinTreeNode<T>* p = root;
+	
+	while (p && p->data != key)
+	{
+		key <= p->data ? p = p->left : p = p->right;
+	}
+
+	if (p)
+	{
+		nd = *p;	
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+template<typename T>
+bool BSTree<T>::successor(const T& key, T &e) const
+{
+	BinTreeNode<T>* p = root;
+	BinTreeNode<T>* pp = NULL;
+
+	while (p && p->data != key)
+	{
+		if (key <= p->data)
+		{ 
+			// pp is the lowest ancestor of key node 
+			// whose left child is also an ancestor of key node
+			pp = p;
+			p = p->left;
+		}
+		else
+		{
+			p = p->right;
+		}
+	}
+
+	if (!p)
+	{
+		return false;
+	}
+	else if (p->right) // if it has right sub-tree, successor is the minimum in right sub-tree
+	{
+		p = p->right;
+		while (p->left)
+		{
+			p = p->left;
+		}
+		e = p->data;
+		return true;
+	}
+	else if (pp)
+	{
+		e = pp->data;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+template<typename T>
+bool BSTree<T>::predecessor(const T& key, T &e) const
+{
+	
 }
 
 #endif
