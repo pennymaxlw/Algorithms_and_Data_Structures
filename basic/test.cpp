@@ -14,12 +14,12 @@ using namespace std;
 int main()
 {
 	//test_sorting();
-	//test_maximum_subarray();
+	test_maximum_subarray();
 	//test_binary_searching();
 	//TODO: test_heap(); 
 	//test_stack();
 	//test_queue();
 	//test_deque();
 	//test_list();
-	test_bintree();
+	//test_bintree();
 }

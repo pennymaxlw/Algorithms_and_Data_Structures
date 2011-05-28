@@ -52,6 +52,33 @@ int maximum_subarray_dp(vector<int> &in, int &lo, int &hi)
 	return max;
 }
 
+int maximum_subarray_dp2(vector<int> &in, int &lo, int &hi)
+{
+	int sum_min = in[0];
+	int sum = in[0];
+	int max = in[0];
+	int tmp = 0;
+	lo = hi = 0;
+
+	for (int i = 1; i < in.size(); i++)
+	{
+		sum += in[i];
+		tmp = sum - sum_min;
+		if (tmp > 0)
+		{	
+			if (tmp > max)
+			{
+				max = tmp;
+			}
+		}
+		else
+		{
+			sum_min = sum;
+		}
+	}
+	return max;
+}
+
 typedef int (*pFn) (vector<int>&, int&, int&);
 
 void test_maximum_subarray_func(pFn f)
@@ -89,6 +116,10 @@ void test_maximum_subarray()
 
 	cout << "\n======== DP method =========" << endl;
 	f = maximum_subarray_dp;
+	test_maximum_subarray_func(f);
+	
+	cout << "\n======== DP method2 =========" << endl;
+	f = maximum_subarray_dp2;
 	test_maximum_subarray_func(f);
 	
 	cout << "\n======== brute-force method =========" << endl;
