@@ -1,5 +1,6 @@
 #include "helper.h"
 #include "sorting.h"
+#include "sorting_template.h"
 #include "maximum_subarray.h"
 #include "heap.h"
 #include "stack.h"
@@ -15,7 +16,8 @@ using namespace std;
 int main()
 {
 	//test_sorting();
-	test_maximum_subarray();
+	test_sorting_template();
+	//test_maximum_subarray();
 	//test_binary_searching();
 	//TODO: test_heap(); 
 	//test_stack();
