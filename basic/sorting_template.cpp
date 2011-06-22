@@ -13,7 +13,8 @@ void test_sorting_template() {
 	//merge_sort(v.begin(), v.end());
 	//insertion_sort(v.begin(), v.end());
 	//selection_sort(v.begin(), v.end());
-	bubble_sort(v.begin(), v.end());
+	//bubble_sort(v.begin(), v.end());
+	quick_sort(v.begin(), v.end());
 	
 	copy(v.begin(), v.end(), ostream_iterator<int>(cout, " "));
 	std::cout << std::endl;
