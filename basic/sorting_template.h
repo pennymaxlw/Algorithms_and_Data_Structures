@@ -108,4 +108,24 @@ void quick_sort(RandomAccessIterator first, RandomAccessIterator last) {
 	}
 }
 
+template<class RandomAccessIterator>
+void counting_sort(RandomAccessIterator first, RandomAccessIterator last) {
+	if (first == last || distance(first, last) == 1) return;
+	typedef typename iterator_traits<RandomAccessIterator>::value_type value_type;
+	value_type max = *max_element(first, last);
+	value_type min = *min_element(first, last);
+	size_t size = max - min + 1;
+	vector<value_type> basic(size, 0);
+	RandomAccessIterator it = first;
+	for (; it != last; ++it) {
+		++basic[*it - min];
+	}
+	for (size_t idx = 0; idx < size; ++idx) {
+		while (basic[idx] > 0) {
+			*first++ = idx + min;
+			--basic[idx];
+		}	
+	}
+}
+
 void test_sorting_template();
