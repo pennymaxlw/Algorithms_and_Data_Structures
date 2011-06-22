@@ -4,9 +4,12 @@
 using namespace std;
 
 void test_sorting_template() {
-	int arr[] = {5,4,6,9,8,10,30,16,4,16,8};
-	vector<int> v(arr, arr + sizeof(arr)/sizeof(int));
-	//list<int> v(arr, arr + sizeof(arr)/sizeof(int));
+	vector<int> v;
+	for (int i = 1; i <=30; i++) {
+		v.push_back(i*10);
+	}
+	random_shuffle(v.begin(), v.end());
+	cout << "Before sorting: " << endl;
 	copy(v.begin(), v.end(), ostream_iterator<int>(cout, " "));
 	std::cout << std::endl;
 	
@@ -17,6 +20,7 @@ void test_sorting_template() {
 	//quick_sort(v.begin(), v.end());
 	counting_sort(v.begin(), v.end());
 	
+	cout << "After sorting: " << endl;
 	copy(v.begin(), v.end(), ostream_iterator<int>(cout, " "));
 	std::cout << std::endl;
 }
