@@ -1,12 +1,13 @@
 #include <algorithm>
 #include <iterator>
 #include <vector>
+#include <map>
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
 using namespace std;
 
-template<class BidirectionalIterator>
+template<typename BidirectionalIterator>
 void merge_aux(BidirectionalIterator first, BidirectionalIterator mid, BidirectionalIterator last) {
 	typedef typename iterator_traits<BidirectionalIterator>::value_type value_type;
 	vector<value_type> left, right;
@@ -29,7 +30,7 @@ void merge_aux(BidirectionalIterator first, BidirectionalIterator mid, Bidirecti
 	copy(iter_right, right.end(), first);
 }
 
-template<class BidirectionalIterator>
+template<typename BidirectionalIterator>
 void merge_sort(BidirectionalIterator first, BidirectionalIterator last) {
 	if (first == last || distance(first, last) == 1) return;
 	typedef typename iterator_traits<BidirectionalIterator>::difference_type diff_type;
@@ -43,7 +44,7 @@ void merge_sort(BidirectionalIterator first, BidirectionalIterator last) {
 	}
 }
 
-template<class RandomAccessIterator>
+template<typename RandomAccessIterator>
 void insertion_sort(RandomAccessIterator first, RandomAccessIterator last) {
 	if (first == last || distance(first, last) == 1) return;
 	RandomAccessIterator iter1 = first + 1;
@@ -59,7 +60,7 @@ void insertion_sort(RandomAccessIterator first, RandomAccessIterator last) {
 	}
 }
 
-template<class RandomAccessIterator>
+template<typename RandomAccessIterator>
 void selection_sort(RandomAccessIterator first, RandomAccessIterator last) {
 	if (first == last || distance(first, last) == 1) return;
 	RandomAccessIterator iter1, iter2, iter_smallest;
@@ -72,7 +73,7 @@ void selection_sort(RandomAccessIterator first, RandomAccessIterator last) {
 	}
 }
 
-template<class RandomAccessIterator>
+template<typename RandomAccessIterator>
 void bubble_sort(RandomAccessIterator first, RandomAccessIterator last) {
 	if (first == last || distance(first, last) == 1) return;
 	RandomAccessIterator iter1, iter2;
@@ -83,7 +84,7 @@ void bubble_sort(RandomAccessIterator first, RandomAccessIterator last) {
 	}
 }
 
-template<class RandomAccessIterator>
+template<typename RandomAccessIterator>
 RandomAccessIterator quick_sort_partition(RandomAccessIterator first, RandomAccessIterator last) {
 	int offset = rand() % distance(first, last);
 	RandomAccessIterator pos = first + offset;
@@ -97,7 +98,7 @@ RandomAccessIterator quick_sort_partition(RandomAccessIterator first, RandomAcce
 	return store;
 }
 
-template<class RandomAccessIterator>
+template<typename RandomAccessIterator>
 void quick_sort(RandomAccessIterator first, RandomAccessIterator last) {
 	if (first == last || distance(first, last) == 1) return;
 	srand(time(NULL));
@@ -108,7 +109,7 @@ void quick_sort(RandomAccessIterator first, RandomAccessIterator last) {
 	}
 }
 
-template<class RandomAccessIterator>
+template<typename RandomAccessIterator>
 void counting_sort(RandomAccessIterator first, RandomAccessIterator last) {
 	if (first == last || distance(first, last) == 1) return;
 	typedef typename iterator_traits<RandomAccessIterator>::value_type value_type;
@@ -125,6 +126,32 @@ void counting_sort(RandomAccessIterator first, RandomAccessIterator last) {
 			*first++ = idx + min;
 			--basic[idx];
 		}	
+	}
+}
+
+template<typename RandomAccessIterator, typename Hash, typename StableSort>
+//template<typename RandomAccessIterator, typename Hash, typename Key>
+void bucket_sort(RandomAccessIterator first, RandomAccessIterator last, Hash h, StableSort stable_sort) {
+	if (first == last || distance(first, last) == 1) return;
+	typedef typename iterator_traits<RandomAccessIterator>::value_type value_type;
+	map<value_type, vector<value_type> > bucket;
+	RandomAccessIterator it = first;
+	for (; it != last; ++it) {	
+		value_type key = h(*it);
+		if (bucket.count(key)) {
+			bucket[key].push_back(*it);
+		} else {
+			bucket[key] = vector<value_type>(1, *it);
+		}
+	}
+	typename map<value_type, vector<value_type> >::iterator it2 = bucket.begin();
+	typename vector<value_type>::iterator it3;
+	for (; it2 != bucket.end(); ++it2) {
+		stable_sort((*it2).second.begin(), (*it2).second.end());
+		//(*it2).second.sort();
+		for (it3 = (*it2).second.begin(); it3 != (*it2).second.end(); ++it3) {
+			*first++ = *it3;
+		}
 	}
 }
 
