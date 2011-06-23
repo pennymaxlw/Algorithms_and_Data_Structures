@@ -129,9 +129,9 @@ void counting_sort(RandomAccessIterator first, RandomAccessIterator last) {
 	}
 }
 
-template<typename RandomAccessIterator, typename Hash, typename StableSort>
+template<typename RandomAccessIterator, typename Hash>
 //template<typename RandomAccessIterator, typename Hash, typename Key>
-void bucket_sort(RandomAccessIterator first, RandomAccessIterator last, Hash h, StableSort stable_sort) {
+void bucket_sort(RandomAccessIterator first, RandomAccessIterator last, Hash h) {
 	if (first == last || distance(first, last) == 1) return;
 	typedef typename iterator_traits<RandomAccessIterator>::value_type value_type;
 	map<value_type, vector<value_type> > bucket;
@@ -147,7 +147,7 @@ void bucket_sort(RandomAccessIterator first, RandomAccessIterator last, Hash h, 
 	typename map<value_type, vector<value_type> >::iterator it2 = bucket.begin();
 	typename vector<value_type>::iterator it3;
 	for (; it2 != bucket.end(); ++it2) {
-		stable_sort((*it2).second.begin(), (*it2).second.end());
+		insertion_sort((*it2).second.begin(), (*it2).second.end());
 		//(*it2).second.sort();
 		for (it3 = (*it2).second.begin(); it3 != (*it2).second.end(); ++it3) {
 			*first++ = *it3;

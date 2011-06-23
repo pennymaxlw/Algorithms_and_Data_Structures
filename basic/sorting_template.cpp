@@ -23,7 +23,7 @@ void test_sorting_template() {
 	//bubble_sort(v.begin(), v.end());
 	//quick_sort(v.begin(), v.end());
 	//counting_sort(v.begin(), v.end());
-	bucket_sort(v.begin(), v.end(), hash, insertion_sort<vector<int>::iterator>);
+	bucket_sort(v.begin(), v.end(), hash);
 	
 	cout << "After sorting: " << endl;
 	copy(v.begin(), v.end(), ostream_iterator<int>(cout, " "));
