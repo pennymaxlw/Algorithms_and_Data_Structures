@@ -136,6 +136,8 @@ void radix_count(RandomAccessIterator first, RandomAccessIterator last, size_t m
 	for (size_t i = 0; i < max_iteration; ++i) {
 		Radix radix(i);
 		stable_sort(first, last, radix);
+		//cout << "+++++++++++" << endl;
+		//copy(first, last, ostream_iterator<string>(cout, "\n"));
 	}	
 }
 
@@ -154,7 +156,7 @@ struct RadixString {
 	int offset_;
 	RadixString(int i = 0) : offset_(i) {}
 	bool operator()(string a, string b) {
-		return int(a[offset_]) < int(b[offset_]);
+		return a[offset_] < b[offset_];	
 	}
 };
 
@@ -182,6 +184,72 @@ void bucket_sort(RandomAccessIterator first, RandomAccessIterator last, Hash h) 
 			*first++ = *it3;
 		}
 	}
+}
+
+template<typename T, typename Comp = greater<T>, typename Sequence = vector<T> >
+class Heap {
+public:
+	template<typename InputIterator>
+	Heap(InputIterator first, InputIterator last) 
+		: v_(first, last), size_(distance(first, last)) {
+		build();
+		//print();
+	}
+	Heap() : size_(0) {}
+	void push(T t) {}
+	void pop() {}
+	template<typename OutputIterator>
+	void sort(OutputIterator result) {
+		Heap h(*this);	
+		for (int i = h.size_ - 1; i > 0; i--) {
+			swap(h.v_[0], h.v_[i]);
+			--h.size_;
+			h.heapify(0);
+		}
+		copy(h.v_.begin(), h.v_.end(), result);
+	}
+	size_t size() {return size_;}
+	void print() {
+		cout << "Heap members: "; 
+		copy(v_.begin(), v_.end(), ostream_iterator<T>(cout, " "));
+		cout << endl;
+	}
+private:
+	void build() {
+		if (size_ < 2) return;
+		for (int i = size_ / 2; i >= 0; --i) {
+			heapify(i);	
+		}
+	}
+	void heapify(size_t i) {
+		if (size_ < 2) return;
+		size_t l = 2 * i + 1;
+		size_t r = l + 1;
+		size_t max = 0;
+		//if (l < size_ && v_[l] > v_[i])
+		if (l < size_ && Comp()(v_[l], v_[i]))
+			max = l;
+		else
+			max = i;
+		//if (r < size_ && v_[r] > v_[max])
+		if (r < size_ && Comp()(v_[r], v_[max]))
+			max = r;
+		if (max != i) {
+			//cout << "max: " << max << endl;
+			swap(v_[i], v_[max]);
+			heapify(max);
+		}
+	}	
+private:
+	Sequence v_;
+	size_t size_;
+};
+
+template<typename RandomAccessIterator>
+void heap_sort(RandomAccessIterator first, RandomAccessIterator last) {
+	typedef typename iterator_traits<RandomAccessIterator>::value_type T;
+	Heap<T> h(first, last);	
+	h.sort(first);
 }
 
 void test_sorting_template();
