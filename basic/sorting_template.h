@@ -2,6 +2,7 @@
 #include <iterator>
 #include <vector>
 #include <map>
+#include <string>
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -13,7 +14,7 @@ void merge_aux(BidirectionalIterator first, BidirectionalIterator mid, Bidirecti
 	vector<value_type> left, right;
 	copy(first, mid, back_inserter(left));
 	copy(mid, last, back_inserter(right));
-	
+
 	//merge(left.begin(), left.end(), right.begin(), right.end(), first);
 	typename vector<value_type>::iterator iter_left, iter_right;
 	iter_left = left.begin();
@@ -128,6 +129,34 @@ void counting_sort(RandomAccessIterator first, RandomAccessIterator last) {
 		}	
 	}
 }
+
+template<typename RandomAccessIterator, typename Radix>
+void radix_count(RandomAccessIterator first, RandomAccessIterator last, size_t max_iteration, Radix) {
+	if (first == last || distance(first, last) == 1) return;
+	for (size_t i = 0; i < max_iteration; ++i) {
+		Radix radix(i);
+		stable_sort(first, last, radix);
+	}	
+}
+
+struct RadixInt {
+	int radix_;
+	RadixInt(int i = 0) {
+		radix_ = 1;
+		while (i-- >= 0) radix_ *= 10;	
+	}
+	bool operator()(int i, int j) {
+		return (i % radix_) < (j % radix_);
+	}
+};
+
+struct RadixString {
+	int offset_;
+	RadixString(int i = 0) : offset_(i) {}
+	bool operator()(string a, string b) {
+		return int(a[offset_]) < int(b[offset_]);
+	}
+};
 
 template<typename RandomAccessIterator, typename Hash>
 //template<typename RandomAccessIterator, typename Hash, typename Key>
