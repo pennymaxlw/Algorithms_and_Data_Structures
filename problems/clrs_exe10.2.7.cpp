@@ -45,7 +45,7 @@ int main()
 	cout << endl;
 
 	cout << "reverse list..." << endl;
-	list.reverse();
+	//list.reverse();
 	list.traverse(print_int);
 	cout << endl;
 }
