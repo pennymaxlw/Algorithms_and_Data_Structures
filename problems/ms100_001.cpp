@@ -12,13 +12,12 @@ struct BSTNode {
 class BSTree {
 public:
   BSTree() : root_(NULL), dlist_head_(NULL), dlist_cur_(NULL) {} 
-  ~BSTree() {
-    
-  }
+  ~BSTree();
   void insert(int i);
   BSTNode* convert_to_dlist();
 private:
   void convert_to_dlist(BSTNode *node);
+  void destroy(BSTNode *node);
 private:
   BSTNode* root_;
   BSTNode* dlist_head_;
@@ -47,6 +46,18 @@ void BSTree::insert(int i) {
         break;
       }
     }
+  }
+}
+
+BSTree::~BSTree() {
+  destroy(root_);
+}
+
+void BSTree::destroy(BSTNode *node) {
+  if (node) {
+    destroy(node->left);
+    destroy(node->right);
+    delete node;
   }
 }
 
