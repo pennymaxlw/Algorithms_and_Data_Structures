@@ -226,16 +226,13 @@ private:
 		size_t l = 2 * i + 1;
 		size_t r = l + 1;
 		size_t max = 0;
-		//if (l < size_ && v_[l] > v_[i])
 		if (l < size_ && Comp()(v_[l], v_[i]))
 			max = l;
 		else
 			max = i;
-		//if (r < size_ && v_[r] > v_[max])
 		if (r < size_ && Comp()(v_[r], v_[max]))
 			max = r;
 		if (max != i) {
-			//cout << "max: " << max << endl;
 			swap(v_[i], v_[max]);
 			heapify(max);
 		}
