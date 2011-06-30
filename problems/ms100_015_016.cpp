@@ -1,6 +1,7 @@
 #include <iostream>
 #include <queue>
 #include <stack>
+#include <cstdio>
 using namespace std;
 
 struct BSTNode {
@@ -65,37 +66,28 @@ void BSTree::Insert(int i) {
 }
 
 void BSTree::Rotate(BSTNode *node) {
-  if (node) {
-    Rotate(node->left);
-    Rotate(node->right);
-    BSTNode *tmp = NULL;
-    tmp = node->left;
-    node->left = node->right;
-    node->right = tmp;
-  }
+  if (!node) return;
+  BSTNode *tmp = node->left;
+  node->left = node->right;
+  node->right = tmp;
+  if (node->left) Rotate(node->left);
+  if (node->right) Rotate(node->right);
 }
 
 void BSTree::RotateIterative() {
   if (!root_) return; 
   stack<BSTNode*> stack;  
+  stack.push(root_);
   BSTNode *curr = root_;
-  BSTNode *last = NULL;
+  BSTNode *tmp = NULL;
   while (!stack.empty()) {
-    if (curr) {
-      stack.push(curr);
-      curr = curr->left;
-    } else {
-      curr = stack.top();
-      if (curr->right) {
-        curr = curr->right;
-      } else {
-        BSTNode *tmp = curr->left;
-        curr->left = curr->right; 
-        curr->right = tmp;
-        stack.pop();
-        curr = NULL;
-      }
-    }
+    curr = stack.top();
+    stack.pop();
+    tmp = curr->left;
+    curr->left = curr->right;
+    curr->right = tmp;
+    if (curr->left) stack.push(curr->left);
+    if (curr->right) stack.push(curr->right);
   }
 }
 
@@ -126,8 +118,8 @@ int main() {
   tree.Insert(11);
 
   tree.BreadthFirstTraversal();
+  tree.Rotate();
+  tree.BreadthFirstTraversal();
   tree.RotateIterative();
   tree.BreadthFirstTraversal();
-  //tree.Rotate();
-  //tree.BreadthFirstTraversal();
 }
