@@ -3,7 +3,7 @@
 using namespace std;
 
 int FindMaxLengthDigits(char *output, char *input) {
-  if (!output || !input) return; //Caution!! 
+  if (!output || !input) return -1; //Caution!! 
   char *p = input;
   int max = 0;
   char *maxb = NULL;
