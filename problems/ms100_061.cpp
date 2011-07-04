@@ -15,17 +15,14 @@ int ArrayXOR(vector<int> &v) {
 void FindTwoSingleNumber(vector<int> &v, int &m, int &n) {
   if (v.empty()) return;
   int x = ArrayXOR(v);
-  int pos = 0;
-  while (!((x = x >> 1) & 1)) ++pos;
-  int tmp = 0;
+  int mask = 1;
+  while (!((x = x >> 1) & 1)) mask = mask << 1;
   vector<int> tmpv1;
   vector<int> tmpv2;
   vector<int>::iterator it = v.begin();
   int i = 0;
   for (; it != v.end(); ++it, i = 0) {
-    tmp = *it;
-    while (i < pos) tmp = tmp >> 1;
-    if (tmp & 1) tmpv1.push_back(*it);
+    if (*it & mask) tmpv1.push_back(*it);
     else tmpv2.push_back(*it);
   }
   m = ArrayXOR(tmpv1);
