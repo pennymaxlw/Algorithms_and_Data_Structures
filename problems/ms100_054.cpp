@@ -4,13 +4,10 @@
 #include <iterator>
 using namespace std;
 
-void MakeOddEven(vector<int> &in)
-{
+void MakeOddEven(vector<int> &in) {
   vector<int>::iterator first = in.begin();
   vector<int>::iterator last = in.end() - 1;
-
-  while (1)
-  {
+  while (1) {
     while ((*first) % 2 == 1) ++first;
     while ((*last) % 2 == 0) --last;
     if (first < last) 
