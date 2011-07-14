@@ -25,7 +25,7 @@ public:
   }
 private:
   void destroy(BTNode *node);
-  void find_sum_path(int s, BTNode *node, int sum, list<int> &path);
+  void find_sum_path(int s, BTNode *node, int &sum, list<int> &path);
 private:
   BTNode* root_;
 };
@@ -63,22 +63,21 @@ void BTree::insert(int i) {
   }
 }
 
-void BTree::find_sum_path(int s, BTNode *node, int sum, list<int> &path) {
-  if (node) {
-    sum += node->val;
+void BTree::find_sum_path(int s, BTNode *node, int &sum, list<int> &path) {
+  if (!node) return;
+  sum += node->val;
+  if (sum > s)
+    return;
+  else
     path.push_back(node->val);
-    if (sum < s) {
-      list<int> path1(path), path2(path);
-      find_sum_path(s, node->left, sum, path1);
-      find_sum_path(s, node->right, sum, path2);
-    } else if (sum == s) {
-      cout << "Found path: ";
-      copy(path.begin(), path.end(), ostream_iterator<int>(cout, " "));
+  if (node->left) find_sum_path(s, node->left, sum, path);
+  if (node->right) find_sum_path(s, node->right, sum, path);
+  if (!node->left && !node->right && s == sum) { //Leaf
+      copy(path.begin(), path.end(), ostream_iterator<int>(cout, " " ));
       cout << endl;
-    } else {
-      return;
-    }
   }
+  path.pop_back();
+  sum -= node->val;  
 }
 
 int main() {
@@ -89,5 +88,5 @@ int main() {
   tr.insert(4);
   tr.insert(7);
 
-  tr.find_sum_path(22);
+  tr.find_sum_path(19);
 }
