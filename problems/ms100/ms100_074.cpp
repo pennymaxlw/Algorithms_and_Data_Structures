@@ -44,14 +44,17 @@ int FindNumMoreHalf(vector<int> &v) {
 int FindNumMoreHalfScan(vector<int> &v) {
   int size = v.size();
   if (size <= 1) return -1;
-  bool empty = true;
   int num = -1;
+  int count = 0;
   for (int i = 0; i < size; ++i) {
-    if (empty) {
+    if (count == 0) {
       num = v[i];
-      empty = false;
-    } else if (v[i] != num){
-      empty = true;
+      ++count;
+    } else {
+      if (v[i] != num)
+        --count;
+      else
+        ++count;
     }
   }
   return num;
@@ -59,6 +62,7 @@ int FindNumMoreHalfScan(vector<int> &v) {
 
 int main() {
   int arr[] = {5,4,5,5,2,5,2,5,6,5,5,1};
+  //int arr[] = {3,3,3,4,4};
   //int arr[] = {2,2};
   vector<int> v(arr, arr + sizeof(arr) / sizeof(int));
   cout << "The number which more than half is: "
