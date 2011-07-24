@@ -33,6 +33,30 @@ void RevertSentence(char *sentence) {
   }
 }
 
+void RevertSentence2(char *str) {
+  if (!str || strlen(str) < 2) return;
+  char *p = str;
+  char *beg = NULL;
+  bool inword = false;
+  while (*p) {
+    if (isspace(*p)) {
+      if (inword) {
+        RevertWord(beg, p - 1);
+        inword = false;
+      }
+    } else {
+      if (!inword) {
+        inword = true;
+        beg = p;
+      }
+    }
+    ++p;
+  }
+  if (inword)
+    RevertWord(beg, p - 1);
+  RevertWord(str, str + strlen(str) - 1);
+}
+
 int main() {
   const int MAX = 256;
   char s[MAX];
