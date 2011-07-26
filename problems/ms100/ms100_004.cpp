@@ -1,5 +1,6 @@
 #include <iostream>
 #include <list>
+#include <deque>
 #include <iterator>
 #include <algorithm>
 using namespace std;
@@ -27,10 +28,15 @@ public:
     list<int> path;
     FindPathWithSum(root_, path, sum);
   }
+  void FindAnyPathWithSum(int sum) {
+    deque<int> path;
+    FindAnyPathWithSum(root_, path, sum);
+  }
 private:
   void destroy(BTNode *node);
   void find_sum_path(int s, BTNode *node, int &sum, list<int> &path);
   void FindPathWithSum(BTNode *node, list<int> &path, int sum);
+  void FindAnyPathWithSum(BTNode *node, deque<int> &path, int sum);
 private:
   BTNode* root_;
 };
@@ -101,6 +107,25 @@ void BTree::FindPathWithSum(BTNode *node, list<int> &path, int sum) {
   path.pop_back();
 }
 
+// Path NOT necessarily from root
+void BTree::FindAnyPathWithSum(BTNode *node, deque<int> &path, int sum) {
+  if (!node) return;
+  path.push_back(node->val);
+  deque<int>::iterator it = path.end() - 1;
+  int tmp = sum;
+  for (; it != path.begin() - 1; --it) {
+    tmp -= *it;
+    if (tmp == 0) break;
+  }
+  if (it != path.begin() - 1) {
+    copy(it, path.end(), ostream_iterator<int>(cout, " "));
+    cout << endl;
+  }
+  FindAnyPathWithSum(node->left, path, sum);
+  FindAnyPathWithSum(node->right, path, sum);
+  path.pop_back();
+}
+
 int main() {
   BTree tr;
   tr.insert(10);
@@ -108,7 +133,12 @@ int main() {
   tr.insert(12);
   tr.insert(4);
   tr.insert(7);
+  tr.insert(2);
+  tr.insert(3);
+  tr.insert(6);
+  tr.insert(8);
 
   //tr.find_sum_path(19);
-  tr.FindPathWithSum(19);
+  //tr.FindPathWithSum(19);
+  tr.FindAnyPathWithSum(23);
 }
