@@ -19,6 +19,7 @@ public:
 private:
   void ClearAux(BSTNode *node);
   int LcaAux(BSTNode *node, int i, int j, BSTNode *&lca);
+  int LcaAux2(BSTNode *node, int i, int j, BSTNode *&lca);
 private:
   BSTNode *root_;
 };
@@ -80,9 +81,22 @@ int BSTree::LcaAux(BSTNode *node, int i, int j, BSTNode *&lca) {
   return 2;                               //Have found lca, return val is not important
 }
 
+int BSTree::LcaAux2(BSTNode *root, int i, int j, BSTNode *&lca) {
+  if (!root) return 0;
+  if (lca) return 2;
+  int l = LcaAux2(root->left, i, j, lca);
+  int r = LcaAux2(root->right, i, j, lca);
+  if (root->val == i || root->val == j)
+    return l + r + 1;
+  if (l + r == 2 && !lca)
+    lca = root;
+  return l + r;
+}
+
 int BSTree::Lca(int i, int j) {
   BSTNode *lca = NULL;
-  LcaAux(root_, i, j, lca);
+  //LcaAux(root_, i, j, lca);
+  LcaAux2(root_, i, j, lca);
   if (lca) return lca->val;
   else return -1; 
 }
