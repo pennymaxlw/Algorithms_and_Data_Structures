@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <vector>
+#include <set>
 using namespace std;
 
 int cnt = 0;
@@ -15,6 +17,23 @@ void PermutationRecursive(string &s, int first = 0) {
     swap(s[first], s[i]);
     PermutationRecursive(s, first + 1);
     swap(s[first], s[i]);
+  }
+}
+
+void PermutationRecursive2(set<char> &chars, vector<char> &result) {
+  if (chars.empty()) {
+    for(int i = 0; i < result.size(); ++i)
+      cout << result[i];
+    cout << endl;
+    return;
+  }
+  set<char>::iterator it = chars.begin();
+  for (; it != chars.end(); ++it) {
+    chars.erase(*it);
+    result.push_back(*it);
+    PermutationRecursive2(chars, result);
+    result.pop_back();
+    chars.insert(*it);
   }
 }
 
@@ -55,7 +74,10 @@ int main() {
     cin >> s;
     cout << "Permutations" << endl;
     //PermutationRecursive(s);
-    PermutationSort(s);
+    vector<char> result;
+    set<char> chars(s.begin(), s.end());
+    PermutationRecursive2(chars, result);
+    //PermutationSort(s);
     cout << "Total: " << cnt << endl;
     cnt = 0;
   }
