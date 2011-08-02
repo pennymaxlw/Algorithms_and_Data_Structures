@@ -18,11 +18,30 @@ void CopyOverlappedString(char *src, char *dst) {
     *d++ = *s++;
 }
 
+void CopyOverlappedString2(const char *src, char *dst) {
+  if (!src || !dst || src == dst) return;
+  const char *psrc = NULL;
+  char *pdst = NULL;
+  int len = strlen(src);
+  if (src < dst && dst < src + len) {
+    psrc = src + len;
+    pdst = dst + len;
+    for (int i = len; i >= 0; --i)
+      *pdst-- = *psrc--;
+  } else {
+    psrc = src;
+    pdst = dst;
+    while ((*pdst++ = *psrc++) != '\0');
+    *pdst = '\0';
+  }
+}
+
 
 int main() {
   char src[100] = "Hello World!";
-  char *dst = &src[13];
-  CopyOverlappedString(src, dst);
+  //char *dst = &src[1];
+  char dst[100];
+  CopyOverlappedString2(src, dst);
   puts("Copied string is:");
   puts(dst);
 }
