@@ -23,6 +23,7 @@ public:
     Rotate(root_);
   }
   void RotateIterative();
+  void RotateIterative2();
   void BreadthFirstTraversal();
 private:
   void ClearAux(BSTNode *node);
@@ -91,6 +92,23 @@ void BSTree::RotateIterative() {
   }
 }
 
+void BSTree::RotateIterative2() {
+  if (!root_) return;
+  stack<BSTNode*> s;
+  BSTNode *p = root_;
+  while (p || !s.empty()) {
+    if (p) {
+      s.push(p);
+      swap(p->left, p->right);
+      p = p->left;
+    } else {
+      p = s.top();
+      s.pop();
+      p = p->right;
+    }
+  }
+}
+
 void BSTree::BreadthFirstTraversal() {
   if (!root_) return;
   queue<BSTNode*> qu;
@@ -118,8 +136,8 @@ int main() {
   tree.Insert(11);
 
   tree.BreadthFirstTraversal();
-  tree.Rotate();
-  tree.BreadthFirstTraversal();
-  tree.RotateIterative();
+  //tree.Rotate();
+  //tree.BreadthFirstTraversal();
+  tree.RotateIterative2();
   tree.BreadthFirstTraversal();
 }

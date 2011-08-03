@@ -281,27 +281,42 @@ void BinTree<T>::post_order_iterative(Visitor<T>& visitor, BinTreeNode<T>* node)
 
 	while (!stk.empty() || curr)
 	{
-		if (curr)
-		{
-			stk.push(curr);
-			//cout << "push: " << curr->data << endl;
-			curr = curr->left;
-		}
-		else
-		{
-			curr = stk.top();
-			if (!curr->right || curr->right == last)	
-			{
-				visitor.visit(curr);
-				stk.pop();
-				last = curr;
-				curr = NULL;
-			}
-			else
-			{
-				curr = curr->right;	
-			}
-		}
+		//if (curr)
+		//{
+		//	stk.push(curr);
+		//	//cout << "push: " << curr->data << endl;
+		//	curr = curr->left;
+		//}
+		//else
+		//{
+		//	curr = stk.top();
+		//	if (!curr->right || curr->right == last)	
+		//	{
+		//		visitor.visit(curr);
+		//		stk.pop();
+		//		last = curr;
+		//		curr = NULL;
+		//	}
+		//	else
+		//	{
+		//		curr = curr->right;	
+		//	}
+    //  }
+		//}
+    if (curr) {
+      stk.push(curr);
+      curr = curr->left;
+    } else {
+      curr = stk.top();
+      if (curr->right && curr->right != last) {
+        curr = curr->right;
+      } else {
+        visitor.visit(curr);
+        stk.pop();
+        last = curr;
+        curr = NULL;
+      }
+    }
 	}
 }
 

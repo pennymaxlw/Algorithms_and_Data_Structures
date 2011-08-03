@@ -2,7 +2,7 @@
 #include "sorting.h"
 #include "sorting_template.h"
 #include "maximum_subarray.h"
-#include "heap.h"
+//#include "heap.h"
 #include "stack.h"
 #include "queue.h"
 #include "deque.h"
@@ -16,7 +16,7 @@ using namespace std;
 int main()
 {
 	//test_sorting();
-	test_sorting_template();
+	//test_sorting_template();
 	//test_maximum_subarray();
 	//test_binary_searching();
 	//TODO: test_heap(); 
@@ -24,6 +24,6 @@ int main()
 	//test_queue();
 	//test_deque();
 	//test_list();
-	//test_bintree();
+	test_bintree();
 	//test_bs_tree();
 }
