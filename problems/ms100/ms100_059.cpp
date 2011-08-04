@@ -30,7 +30,7 @@ private:
   ~Final() {}
 };
 
-class FinalClass2 : public FinalClassAux {
+class FinalClass2 : virtual public FinalClassAux {
 //class FinalClass2 : public Final<FinalClass2> {
 public:
   FinalClass2() {}
@@ -38,8 +38,8 @@ public:
 };
 
 //class Test : public FinalClass {
-//class Test : public FinalClass2 {
-class Test {
+class Test : public FinalClass2 {
+//class Test {
 public:
   Test() {}
   ~Test() {}
@@ -50,4 +50,5 @@ int main() {
   FinalClass::DeleteInstance(obj);
 
   FinalClass2 obj2;
+  Test t;
 }
