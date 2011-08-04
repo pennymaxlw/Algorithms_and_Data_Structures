@@ -22,6 +22,7 @@ private:
   void Clear(BSTNode *node);
   BSTNode* RebuildFromPreInOrderAux(vector<int> &pre, int rootidx,
                                  vector<int> &in, int subfirst, int sublast);
+  BSTNode* RebuildFromPreInOrderAux2(int *pre, int prelen, int *in, int inlen);
 private:
   BSTNode *root_;
 };
@@ -72,10 +73,24 @@ BSTNode* BSTree::RebuildFromPreInOrderAux(vector<int> &pre, int rootidx,
   return p;
 }
 
+BSTNode* BSTree::RebuildFromPreInOrderAux2(int *pre, int prelen, int *in, int inlen) {
+  if (pre == NULL || in == NULL || prelen < 1 || inlen < 1)
+    return NULL;
+  BSTNode *p = new BSTNode(pre[0]);
+  int i = 0;
+  for (; i < inlen; ++i)
+    if (in[i] == pre[0]) break;
+  if (i >= inlen) return NULL;
+  p->left = RebuildFromPreInOrderAux2(pre + 1, i, in, i);
+  p->right = RebuildFromPreInOrderAux2(pre + i + 1, inlen - i - 1, in + i + 1, inlen - i - 1);
+  return p;
+}
+
 void BSTree::RebuildFromPreInOrder(vector<int> &pre, vector<int> &in) {
   if (pre.empty() || in.empty() || pre.size() != in.size()) return;
   Clear(root_);
   root_ = RebuildFromPreInOrderAux(pre, 0, in, 0, in.size() - 1);
+  //root_ = RebuildFromPreInOrderAux2(&pre[0], pre.size(), &in[0], in.size());
 }
 
 void BSTree::BreadthFirstTraversal() {
