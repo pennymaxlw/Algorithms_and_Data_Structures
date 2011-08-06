@@ -17,12 +17,26 @@ void MakeOddEven(vector<int> &in) {
   }
 }
 
+void MakeOddEven2(vector<int> &in) {
+  int len = in.size();
+  if (len < 2) return;
+  int i = 0, j = len - 1;
+  while (i < j) {
+    if (in[i] & 1 == 0)
+      ++i;
+    else if (in[j] & 1 == 1) 
+      --j;
+    else
+      swap(in[i++], in[j--]);
+  }
+}
+
 
 int main() {
   int arr[] = {1,2,3,4,5,6,7,8,9,10};
   //int arr[] = {2,4,6,8,10,1,3,5,7,9};
   vector<int> v(arr, arr + sizeof(arr)/sizeof(int));
-  MakeOddEven(v);
+  MakeOddEven2(v);
   copy(v.begin(), v.end(), ostream_iterator<int>(cout, " " ));
   cout << endl;
 }

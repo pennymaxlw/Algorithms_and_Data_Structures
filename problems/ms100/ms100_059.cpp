@@ -38,8 +38,8 @@ public:
 };
 
 //class Test : public FinalClass {
-class Test : public FinalClass2 {
-//class Test {
+//class Test : public FinalClass2 {
+class Test {
 public:
   Test() {}
   ~Test() {}
