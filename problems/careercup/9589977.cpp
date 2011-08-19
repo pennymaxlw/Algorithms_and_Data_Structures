@@ -13,6 +13,7 @@ public:
   ~SLList();
   void Traversal();
   void SwapAlternateNodes();
+  void SwapAlternateNodes2();
 private:
   SLList(const SLList&);
   SLList& operator=(const SLList&);  
@@ -72,14 +73,30 @@ void SLList::SwapAlternateNodes() {
   }
 }
 
+void SLList::SwapAlternateNodes2() {
+  if (head_ == NULL || head_->next == NULL) 
+    return;
+  SLLNode *p = head_, *pp = NULL; 
+  while (p != NULL && p->next != NULL) {
+    cout << p->val << endl;
+    if (pp == NULL)
+      head_ = p->next;
+    else
+      pp->next = p->next; 
+    p->next = p->next->next;
+    pp->next->next = p;
+    pp = p;
+    p = p->next;
+  } 
+}
 
 int main() {
-  //int arr[] = {1,2,3,4,5,6};
+  int arr[] = {1,2,3,4,5,6};
   //int arr[] = {1,2,3,4,5};
   //int arr[] = {1,2};
-  int arr[] = {1};
+  //int arr[] = {1};
   SLList sll(arr, sizeof(arr) / sizeof (int));
   sll.Traversal();
-  sll.SwapAlternateNodes();
+  sll.SwapAlternateNodes2();
   sll.Traversal();
 }
