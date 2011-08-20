@@ -76,13 +76,13 @@ void SLList::SwapAlternateNodes() {
 void SLList::SwapAlternateNodes2() {
   if (head_ == NULL || head_->next == NULL) 
     return;
-  SLLNode *p = head_, *pp = NULL; 
+  SLLNode *p = head_, *pp = head_; 
+  head_ = head_->next;
+  p->next = p->next->next;
+  head_->next = p;
+  p = p->next;
   while (p != NULL && p->next != NULL) {
-    cout << p->val << endl;
-    if (pp == NULL)
-      head_ = p->next;
-    else
-      pp->next = p->next; 
+    pp->next = p->next; 
     p->next = p->next->next;
     pp->next->next = p;
     pp = p;
@@ -91,10 +91,10 @@ void SLList::SwapAlternateNodes2() {
 }
 
 int main() {
-  int arr[] = {1,2,3,4,5,6};
+  //int arr[] = {1,2,3,4,5,6};
   //int arr[] = {1,2,3,4,5};
   //int arr[] = {1,2};
-  //int arr[] = {1};
+  int arr[] = {1};
   SLList sll(arr, sizeof(arr) / sizeof (int));
   sll.Traversal();
   sll.SwapAlternateNodes2();
