@@ -45,10 +45,32 @@ bool CheckPopArray(vector<int> &push_v, vector<int> &pop_v) {
     return false;
 }
 
+bool CheckPopArray2(vector<int> &pushv, vector<int> &popv) {
+  if (pushv.size() == 0 || popv.size() == 0 || 
+      pushv.size() != popv.size())
+    return false;
+  typedef vector<int>::size_type SIZE;
+  SIZE size = pushv.size();
+  stack<int> s;
+  for (SIZE i = 0, j = 0; i < size; ++i) {
+    if (j < size && s.empty())
+      s.push(pushv[j++]);
+    while (j < size && s.top() != popv[i])
+      s.push(pushv[j++]);
+    if (s.top() == popv[i])
+      s.pop();
+    else
+      return false;
+  }
+  return true;
+}
+
 int main() {
   int push_arr[] = {1,2,3,4,5};
-  int pop_arr[] = {4,5,3,2,1}; //Yes
-  //int pop_arr[] = {4,3,5,1,2}; //No
+  //int pop_arr[] = {4,5,3,2,1}; //Yes
+  int pop_arr[] = {4,5,2,3,1}; //Yes
+  //int pop_arr[] = {1,2,3,4,5}; //Yes
+  //int pop_arr[] = {5,4,3,2,1}; //Yes
   //int push_arr[] = {1,2,3,4,5,6,7,8,9,10};
   //int pop_arr[] = {5,4,3,7,6,2,1,8,9,10}; //Yes
   vector<int> push_v(push_arr, push_arr + sizeof(push_arr)/sizeof(int));
@@ -60,7 +82,7 @@ int main() {
   copy(pop_v.begin(), pop_v.end(), ostream_iterator<int>(cout, " "));
   cout << endl;
 
-  bool flag = CheckPopArray(push_v, pop_v);
+  bool flag = CheckPopArray2(push_v, pop_v);
   if (flag)
     cout << "YES...The pop array is the right one for the push array!!" << endl;
   else
