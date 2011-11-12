@@ -57,6 +57,54 @@ void Decoding(char *d, const char *s) {
   d[save] = '\0';
 }
 
+void Encoding2(char *s) {
+  if (s == NULL)
+    return;
+  size_t len = strlen(s);
+  if (len < 2)
+    return;
+  char *p = s, *pre = s, *save = s;
+  int count = 0;
+  while (*p != '\0') {
+    while (*p == *pre) {
+      p++;
+      count++;
+    }
+    if (count > 1) {
+      char tmp = *pre;
+      *save++ = '0' + count;
+      *save++ = tmp;
+    } else {
+      *save++ = *pre;
+    }
+    pre = p;
+    count = 0;
+  }
+  *save = '\0';
+}
+
+void Decoding2(char *d, char *s) {
+  if (d == NULL || s == NULL)
+    return;
+  size_t len = strlen(s);
+  if (len < 2)
+    return;
+  char *p = s, *save = d;
+  int count = 0;
+  while (*p != '\0') {
+    if (isdigit(*p) && isalpha(*(p + 1))) {
+      count = *p - '0';
+      while (count-- > 0)
+        *save++ = *(p + 1);
+      p += 2;
+    } else {
+      *save++ = *p;
+      p++;
+    } 
+  }
+  *save = '\0';
+}
+
 
 int main() {
   char s[100];
@@ -66,10 +114,12 @@ int main() {
     cout << "Input a string" << endl;
     cin >> s;
     cout << "Encoded string" << endl;
-    Encoding(d, s);
-    cout << d << endl;
-    cout << "Decoding string" << endl;
-    Decoding(s, d);
+    Encoding2(s);
     cout << s << endl;
+    //Encoding(d, s);
+    //cout << d << endl;
+    cout << "Decoding string" << endl;
+    Decoding2(d, s);
+    cout << d << endl;
   }
 }
