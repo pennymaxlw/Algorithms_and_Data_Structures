@@ -23,12 +23,23 @@ void PrintContinuousChars(const string & s) {
   cout << endl;
 }
 
+void PrintContinuousChars2(const string & s) {
+  if (s.size() < 1)
+    return;
+  int i = 0;
+  cout << s[i++];
+  while (i <= s.size()) {
+    if (s[i] - s[i-1] != 1)
+      cout << endl;
+    cout << s[i++];
+  }
+}
 
 int main() {
   string s;
   while (cin) {
     cin >> s;
     cout << "==========" << endl;
-    PrintContinuousChars(s);
+    PrintContinuousChars2(s);
   }
 }
